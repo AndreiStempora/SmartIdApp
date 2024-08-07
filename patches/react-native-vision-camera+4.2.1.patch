@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/frameprocessors/VisionCameraProxy.kt b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/frameprocessors/VisionCameraProxy.kt
+index d697bef..0fcabb5 100644
+--- a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/frameprocessors/VisionCameraProxy.kt
++++ b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/frameprocessors/VisionCameraProxy.kt
+@@ -12,7 +12,9 @@ import com.facebook.react.uimanager.UIManagerHelper
+ import com.mrousavy.camera.core.ViewNotFoundError
+ import com.mrousavy.camera.react.CameraView
+ import java.lang.ref.WeakReference
++import com.facebook.react.common.annotations.FrameworkAPI
+ 
++@OptIn(FrameworkAPI::class)
+ @Suppress("KotlinJniMissingFunction") // we use fbjni.
+ class VisionCameraProxy(private val reactContext: ReactApplicationContext) {
+   companion object {
