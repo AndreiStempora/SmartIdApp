@@ -2,13 +2,8 @@ export type App = {
     stack: 'login' | 'authenticated' | 'dealership' | 'language';
     domain: string;
     token: string;
-    appraisal: string;
-    searchWord: string;
-    language: string;
-    dealerships: [Dealership] | [];
-    appraisalDeletedModalVisibility: boolean;
-    photoUploadingList: [];
-    uploadServiceEnabled: true;
+    language: 'en';
+    connected: boolean;
 };
 
 export type Vehicle = {

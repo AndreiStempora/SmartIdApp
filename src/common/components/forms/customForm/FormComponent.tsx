@@ -5,6 +5,8 @@ import { h } from '../../../styles/PixelPerfect.tsx';
 import CustomModal from '../../modals/customModal.tsx';
 import { commonFonts } from '../../../styles/constants.tsx';
 import useText from '../../../services/hooks/textHook.tsx';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '../../screenComponents/toasts/CustomToast.tsx';
 
 interface Field {
     name: string;
@@ -58,7 +60,13 @@ const FormComponent = ({
         const newFields = localFields.map(field => ({ ...field, err: err }));
         setLocalFields(newFields);
         if (err) {
-            setIsVisible(true);
+            Toast.show({
+                type: 'formError',
+                text1: err,
+                bottomOffset: h(11),
+                position: 'bottom',
+            });
+            console.log('err', err);
         }
     }, [err]);
 
@@ -78,22 +86,23 @@ const FormComponent = ({
 
     return (
         <>
-            <CustomModal
-                isVisible={isVisible}
-                title={err}
-                setIsVisible={() => {}}
-                buttons={[
-                    {
-                        title: t('login.formErrorButton'),
-                        onPress: () => {
-                            setIsVisible(false);
-                        },
-                    },
-                ]}>
-                <Text style={styles.errorMessage}>
-                    {t('login.formErrorText')}
-                </Text>
-            </CustomModal>
+            {/*<CustomModal*/}
+            {/*    isVisible={isVisible}*/}
+            {/*    title={err}*/}
+            {/*    setIsVisible={() => {}}*/}
+            {/*    buttons={[*/}
+            {/*        {*/}
+            {/*            title: t('login.formErrorButton'),*/}
+            {/*            onPress: () => {*/}
+            {/*                setIsVisible(false);*/}
+            {/*            },*/}
+            {/*        },*/}
+            {/*    ]}>*/}
+            {/*    <Text style={styles.errorMessage}>*/}
+            {/*        {t('login.formErrorText')}*/}
+            {/*    </Text>*/}
+            {/*</CustomModal>*/}
+
             <FlatList
                 style={styles.formStyle}
                 scrollEnabled={false}
@@ -139,6 +148,7 @@ const FormComponent = ({
                 )}
                 keyExtractor={item => `${item.name}-${item.type}`}
             />
+            <Toast config={toastConfig} />
             {/*{err && <Text style={styles.error}>{err}</Text>}*/}
         </>
     );

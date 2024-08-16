@@ -2,11 +2,7 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Platform } from 'react-native';
-import {
-    getAppDomain,
-    getAppraisal,
-    getAppToken,
-} from '../../store/slices/appSlice.tsx';
+import { getAppDomain, getAppToken } from '../../store/slices/appSlice.tsx';
 import useRecon from './reconHook.tsx';
 
 type BodyObject = {
@@ -19,14 +15,11 @@ type PictureUpload = {
         type: string;
         name: string;
     };
-    vehicle: string;
-    spot: number;
 };
 
 const useBlob = () => {
     const BASE_URL = useSelector(getAppDomain);
     const token = useSelector(getAppToken);
-    const appraisal = useSelector(getAppraisal);
     const { item } = useRecon();
 
     const setRequestBody = (token: boolean | string, obj: BodyObject) => {
@@ -114,17 +107,13 @@ const useBlob = () => {
             // formData.append('token', token);
 
             console.log(formData, 'formData');
-            const response = await axios.post(
-                BASE_URL + '/novocapture/upload',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        novocapture: token,
-                    },
-                    ...options,
-                }
-            );
+            const response = await axios.post(BASE_URL + 'upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    smartId: token,
+                },
+                ...options,
+            });
             console.log(response, 'response.UPLOAD');
             return response.data;
         } catch (error) {
@@ -142,7 +131,7 @@ const useBlob = () => {
     };
 
     const upload = async (file: PictureUpload, options = {}) => {
-        let tries = 0;
+        let tries = 2;
         console.log('test upload', options);
         return await tryUpload(file, tries, options);
     };
@@ -214,7 +203,6 @@ const useBlob = () => {
                     'Novotrade-in': token,
                 },
                 [
-                    { name: 'appraisal', data: appraisal },
                     { name: 'image', filename: 'image.jpg', data: aaa },
                     { name: 'item', data: item.id },
                 ]
@@ -248,10 +236,7 @@ const useBlob = () => {
                     'Content-Type': 'multipart/form-data',
                     'Novotrade-in': token,
                 },
-                [
-                    { name: 'appraisal', data: appraisal },
-                    { name: 'image', filename: 'image.jpg', data: aaa },
-                ]
+                [{ name: 'image', filename: 'image.jpg', data: aaa }]
             )
                 .then((res: any) => {
                     console.log(res, 'res');

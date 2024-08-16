@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* NovoTrade-inTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NovoTrade-inTests.m */; };
-		096569C567D64C63953776C3 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E189E229D5CA4876AC77384C /* Inter-SemiBold.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-NovoTrade-in.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-NovoTrade-in.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -16,7 +15,8 @@
 		7699B88040F8A987B510C191 /* libPods-NovoTrade-in-NovoTrade-inTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-NovoTrade-in-NovoTrade-inTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		89AB2C19BFD6B31DCCF133B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 292459F7BF25E38694AF8D19 /* PrivacyInfo.xcprivacy */; };
-		F49961DEACF64C57AB898926 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A564BED808784B37A25A30D2 /* Inter-Medium.ttf */; };
+		F8B097C7355E43879330D028 /* InterTight-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F567279EB0B4529843293DB /* InterTight-Regular.ttf */; };
+		B60A8A52AAEF4C8EBA8C81D7 /* InterTight-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBEA39A1516441D087F3886C /* InterTight-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,9 +48,9 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-NovoTrade-in.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NovoTrade-in.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "NovoTrade-in/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-NovoTrade-in-NovoTrade-inTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NovoTrade-in-NovoTrade-inTests.release.xcconfig"; path = "Target Support Files/Pods-NovoTrade-in-NovoTrade-inTests/Pods-NovoTrade-in-NovoTrade-inTests.release.xcconfig"; sourceTree = "<group>"; };
-		A564BED808784B37A25A30D2 /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
-		E189E229D5CA4876AC77384C /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		3F567279EB0B4529843293DB /* InterTight-Regular.ttf */ = {isa = PBXFileReference; name = "InterTight-Regular.ttf"; path = "../assets/fonts/InterTight-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BBEA39A1516441D087F3886C /* InterTight-SemiBold.ttf */ = {isa = PBXFileReference; name = "InterTight-SemiBold.ttf"; path = "../assets/fonts/InterTight-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,8 +118,8 @@
 		484F45447CC14EE28C4C8A13 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A564BED808784B37A25A30D2 /* Inter-Medium.ttf */,
-				E189E229D5CA4876AC77384C /* Inter-SemiBold.ttf */,
+				3F567279EB0B4529843293DB /* InterTight-Regular.ttf */,
+				BBEA39A1516441D087F3886C /* InterTight-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -264,8 +264,8 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				89AB2C19BFD6B31DCCF133B7 /* PrivacyInfo.xcprivacy in Resources */,
-				F49961DEACF64C57AB898926 /* Inter-Medium.ttf in Resources */,
-				096569C567D64C63953776C3 /* Inter-SemiBold.ttf in Resources */,
+				F8B097C7355E43879330D028 /* InterTight-Regular.ttf in Resources */,
+				B60A8A52AAEF4C8EBA8C81D7 /* InterTight-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

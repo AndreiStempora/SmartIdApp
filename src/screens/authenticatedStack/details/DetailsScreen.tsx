@@ -1,243 +1,95 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 import ScreenContainer from '../../../common/components/screenComponents/containers/ScreenContainer.tsx';
-import HeaderComponent from '../../../common/components/screenComponents/bars/headers/HeaderComponent.tsx';
-import CustomHeaderIconButton from '../../../common/components/buttons/buttonIcon/CustomHeaderIconButton.tsx';
 import React, { useEffect, useState } from 'react';
-import apiHeadersHook from '../../../common/services/hooks/apiHeadersHook.tsx';
-import VehicleNameWithIcon, {
-    Name,
-} from '../../../common/components/smallComponents/vehicle/VehicleNameWithIcon.tsx';
-import ListItem from '../../../common/components/smallComponents/listItem/ListItem.tsx';
-import { h } from '../../../common/styles/PixelPerfect.tsx';
+import { h, w } from '../../../common/styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../../common/styles/constants.tsx';
-import ItemWithIcon from '../../../common/components/Items/itemWithIcon/ItemWithIcon.tsx';
-import { useIsFocused } from '@react-navigation/native';
-import useRecon from '../../../common/services/hooks/reconHook.tsx';
-import CustomModal from '../../../common/components/modals/customModal.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    getApp,
-    getAppraisalDeletedModalVisibility,
-    updateAppInfo,
-} from '../../../common/store/slices/appSlice.tsx';
-import { AppDispatch } from '../../../common/store/store.tsx';
-import useText from '../../../common/services/hooks/textHook.tsx';
+import { useRoute } from '@react-navigation/native';
+import IdHeader from '../../../common/components/screenComponents/bars/headers/IdHeader.tsx';
+
+import { MatchItem } from '../matches/components/MatchesItem.tsx';
+import ConfidenceContainer from '../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
+import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
+import DetailsList from './components/DetailsList.tsx';
+import ImageCarousel from './components/ImageCarousel.tsx';
 
 const DetailsScreen = ({ navigation }: any) => {
-    const { postRequest } = apiHeadersHook();
-    const [res, setRes] = useState({
-        sections: [],
+    const router = useRoute();
+    const [item, setItem] = useState<MatchItem>({
+        brand: '',
+        confidence: 0,
+        model: '',
         details: [],
-        appraisal: {} as Name,
+        images: [],
+        reference: '',
     });
-    const [elements, setElements] = useState([]);
-    const [showBackBtn, setShowBackBtn] = useState(false);
-    const isFocused = useIsFocused();
-    const { reset } = useRecon();
-    const showModal = useSelector(getAppraisalDeletedModalVisibility);
-    const dispatch = useDispatch<AppDispatch>();
-    const { t } = useText();
-    const app = useSelector(getApp);
-
-    useEffect(() => {
-        isFocused &&
-            (async () => {
-                console.log('details focused', app);
-                const response = await postRequest(
-                    '/novotradein/app/appraisal/details',
-                    {}
-                );
-                if (response?.status === 'ok') {
-                    setRes(response);
-                }
-                decideBackBtn();
-            })();
-    }, [isFocused]);
-
-    useEffect(() => {
-        if (res?.sections?.length > 0) {
-            const el = res.sections.map((section: any) => {
-                if (section.section === 'images') {
-                    return {
-                        icon: 'image',
-                        name: t('details.sections.images'),
-                        press: () => {
-                            navigation.navigate('Images');
-                        },
-                    };
-                }
-                if (section.section === 'info') {
-                    return {
-                        icon: 'info',
-                        name: t('details.sections.info'),
-                        press: () => {
-                            navigation.navigate('Info');
-                        },
-                    };
-                }
-                if (section.section === 'market') {
-                    return {
-                        icon: 'monitoring',
-                        name: t('details.sections.market'),
-                        press: () => {
-                            navigation.navigate('Market');
-                        },
-                    };
-                }
-                if (section.section === 'obd') {
-                    return {
-                        icon: 'troubleshoot',
-                        name: t('details.sections.obd'),
-                        press: () => {
-                            navigation.navigate('Obd');
-                        },
-                    };
-                }
-                if (section.section === 'recon') {
-                    return {
-                        icon: 'vehicleOptions',
-                        name: t('details.sections.recon'),
-                        press: () => {
-                            reset();
-                            navigation.navigate('Recon');
-                        },
-                    };
-                }
-                if (section.section === 'client') {
-                    return {
-                        icon: 'accountSettings',
-                        name: t('details.sections.client'),
-                        press: () => {
-                            navigation.navigate('Client');
-                        },
-                    };
-                }
-                if (section.section === 'trims') {
-                    return {
-                        icon: 'style',
-                        name: t('details.sections.trims'),
-                        press: () => {
-                            navigation.navigate('Trims');
-                        },
-                    };
-                }
-                if (section.section === 'options') {
-                    return {
-                        icon: 'vehicleRepair',
-                        name: t('details.sections.options'),
-                        press: () => {
-                            navigation.navigate('Options');
-                        },
-                    };
-                }
-            });
-            //@ts-ignore
-            setElements(el);
-        }
-    }, [res]);
-
-    const decideBackBtn = () => {
-        //@ts-ignore
-        const routes = navigation.getState().routes;
-        // console.log(routes, 'routes');
-        if (
-            routes[routes.length - 1].name === 'Details' &&
-            routes[routes.length - 2].name === 'BrowseAppraisals'
-        ) {
-            // console.log('show back btn');
-            setShowBackBtn(true);
-        } else {
-            // console.log('hide back btn');
-            setShowBackBtn(false);
-        }
+    const handleRegisterWatch = () => {
+        console.log('Register watch');
     };
+    useEffect(() => {
+        setItem(router.params as MatchItem);
+        console.log('images', item.images);
+    }, []);
 
-    const handleAppraisalDeleted = () => {
-        // console.log('appraisal deleted');
-        dispatch(updateAppInfo({ appraisalDeletedModalVisibility: false }));
-        navigation.navigate('Dashboard');
-    };
     return (
-        <ScreenContainer
-            nav={navigation}
-            header={
-                <HeaderComponent
-                    title={t('details.title')}
-                    backBtn={showBackBtn}
-                    rightSide={
-                        <CustomHeaderIconButton
-                            icon={'home'}
-                            onPress={() => {
-                                navigation.navigate('Dashboard');
-                            }}
-                        />
-                    }
+        <ScreenContainer nav={navigation} fullScreen={true}>
+            <View style={styles.buttonFloater}>
+                <IdHeader navigation={navigation} />
+            </View>
+            <View style={styles.imageContainer}>
+                {item.images.length !== 1 ? (
+                    <Image
+                        style={styles.img}
+                        source={{ uri: item.images[0] }}
+                    />
+                ) : (
+                    <ImageCarousel images={item.images} />
+                )}
+                <ConfidenceContainer confidence={item.confidence} />
+            </View>
+            <View style={styles.contentContainer}>
+                <CustomTextButton
+                    onPress={handleRegisterWatch}
+                    text={'register watch'}
+                    icon={'watch'}
+                    background={Colors.black300}
+                    border={Colors.black400}
                 />
-            }>
-            <CustomModal
-                isVisible={showModal}
-                title={t('details.modals.error.title')}
-                buttons={[
-                    {
-                        title: t('details.modals.error.button'),
-                        onPress: handleAppraisalDeleted,
-                    },
-                ]}>
-                <View>
-                    <Text style={styles.modalText}>
-                        {t('details.modals.error.text')}
-                    </Text>
-                </View>
-            </CustomModal>
-            <View style={styles.mainContainer}>
-                <View>
-                    <VehicleNameWithIcon name={res?.appraisal} />
+                <View style={styles.listContainer}>
+                    {/*<ImageCarousel images={dummyImages} />*/}
                     <FlatList
-                        style={styles.listItemsContainer}
-                        scrollEnabled={false}
-                        data={res?.details}
-                        renderItem={({ item }) => {
-                            return (
-                                <ListItem
-                                    name={item.title}
-                                    value={item.value}
-                                />
-                            );
-                        }}
+                        showsVerticalScrollIndicator={false}
+                        style={{ flex: 1 }}
+                        data={item.details}
+                        keyExtractor={(item, index) => index.toString()}
+                        //@ts-ignore
+                        renderItem={({ item }) => <DetailsList item={item} />}
                         ItemSeparatorComponent={() => (
-                            <View style={styles.separator}></View>
+                            <View style={styles.transparentSeparator} />
                         )}
-                        keyExtractor={(item: any) => item.title}
                     />
                 </View>
-                <FlatList
-                    style={styles.navigationListContainer}
-                    data={elements}
-                    scrollEnabled={true}
-                    renderItem={({ item }) => {
-                        return (
-                            <ItemWithIcon
-                                onPress={item.press}
-                                icon={item.icon}
-                                name={item.name}
-                            />
-                        );
-                    }}
-                    ItemSeparatorComponent={() => (
-                        <View style={styles.separator}></View>
-                    )}
-                    keyExtractor={(item: any) => item.name}
-                />
-                {/*</View>*/}
             </View>
         </ScreenContainer>
     );
 };
 
 const styles = StyleSheet.create({
+    listContainer: {
+        paddingBottom: h(16),
+        flexGrow: 1,
+    },
+    contentContainer: {
+        paddingHorizontal: w(16),
+        gap: h(24),
+        marginTop: h(16),
+        flex: 1,
+    },
     separator: {
         height: h(2),
         backgroundColor: Colors.gray,
+    },
+    transparentSeparator: {
+        height: h(24),
     },
     listItemsContainer: {
         marginTop: h(24),
@@ -251,6 +103,19 @@ const styles = StyleSheet.create({
     },
     modalText: {
         ...commonFonts.regularTextSmall,
+    },
+    imageContainer: {
+        height: h(250),
+    },
+    buttonFloater: {
+        position: 'absolute',
+        top: h(0),
+        left: w(16),
+    },
+    img: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
     },
 });
 

@@ -5,39 +5,13 @@ type DefaultValues = { [key: string]: any };
 const defaultValues: DefaultValues = {
     //when you change this also change in ts types file
     app: {
-        stack: 'dealership',
-        domain: '',
+        stack: 'authenticated',
+        domain: 'https://v2.smartid.stempora.me/api/smartid-ai/',
         token: '',
-        appraisal: '',
-        searchWord: '',
         language: 'en',
-        dealerships: [],
-        appraisalDeletedModalVisibility: false,
-        photoUploadingList: [],
-        uploadServiceEnabled: true,
+        connected: true,
     },
-    translation: {
-        dealerships: {
-            title: 'Dealerships',
-            button: 'add dealership',
-            text: 'Franchised car dealerships are the front line for car manufacturers to get their products on the road.',
-        },
-        dealershipScanner: {
-            text: 'Please scan the QR code of the dealership.',
-            modals: {
-                error: {
-                    title: 'Couldn’t detect a dealership',
-                    text: 'Please try again.',
-                    button: 'OK',
-                },
-                duplicate: {
-                    title: 'Dealership already added',
-                    text: 'Duplicate dealership found, not adding the new item.',
-                    button: 'OK',
-                },
-            },
-        },
-    },
+    translation: {},
 };
 
 export const setItemInStorage = async (key: string, value: any) => {

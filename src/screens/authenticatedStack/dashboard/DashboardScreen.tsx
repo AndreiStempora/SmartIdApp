@@ -1,123 +1,209 @@
 import ScreenContainer from '../../../common/components/screenComponents/containers/ScreenContainer.tsx';
 import HeaderComponent from '../../../common/components/screenComponents/bars/headers/HeaderComponent.tsx';
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import apiHeadersHook from '../../../common/services/hooks/apiHeadersHook.tsx';
-import ItemWithIcon from '../../../common/components/Items/itemWithIcon/ItemWithIcon.tsx';
-import { h, w } from '../../../common/styles/PixelPerfect.tsx';
-import { Colors } from '../../../common/styles/constants.tsx';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-    getApp,
-    updateAppInfo,
-} from '../../../common/store/slices/appSlice.tsx';
-import { AppDispatch } from '../../../common/store/store.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import Icon from '../../../common/components/icons/Icon.tsx';
-import UserIcon from '../../../common/components/smallComponents/user/UserIcon.tsx';
-import useText from '../../../common/services/hooks/textHook.tsx';
+    ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    Text,
+    View,
+    VirtualizedList,
+} from 'react-native';
 
+import { h, w } from '../../../common/styles/PixelPerfect.tsx';
+import UserIcon from '../../../common/components/smallComponents/user/UserIcon.tsx';
+import ScanItem from './components/ScanItem.tsx';
+import CustomIconButton from '../../../common/components/buttons/buttonIcon/CustomIconButton.tsx';
+import CustomModal from '../../../common/components/modals/customModal.tsx';
+
+import {
+    ImagePickerResponse,
+    launchCamera,
+    launchImageLibrary,
+} from 'react-native-image-picker';
+import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
+import { Colors } from '../../../common/styles/constants.tsx';
+import { useSelector } from 'react-redux';
+import { getApp } from '../../../common/store/slices/appSlice.tsx';
+
+export type ItemContent = {
+    title: string;
+    subtitle: string;
+    date: string;
+    tn: string;
+    code: string;
+    ref: string;
+    conf: number;
+};
+
+type File = {
+    type: string | undefined;
+    uri: string | undefined;
+    name: string | undefined;
+};
 const DashboardScreen = ({ navigation }: any) => {
-    const { getRequest } = apiHeadersHook();
-    const dispatch = useDispatch<AppDispatch>();
-    const [elements, setElements] = useState<{ section: string }[]>([]);
-    const { t } = useText();
+    const [isLoading, setIsLoading] = useState(true);
+    const [scans, setScans] = useState<ItemContent[]>([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const pagination = useRef({ page: 1, ipp: 10, pages: 1 });
+    const { postRequest } = useApiHeaders();
+    const app = useSelector(getApp);
+
+    const photoHandler = (res: ImagePickerResponse) => {
+        if (res.didCancel) {
+            console.log('User cancelled image picker');
+            setIsVisible(false);
+            return;
+        }
+        const file: File | undefined = res.assets?.[0] && {
+            type: res.assets[0].type,
+            uri: res.assets[0].uri,
+            name: res.assets[0].fileName,
+        };
+        setIsVisible(false);
+        navigation.navigate('Analyzing', { file: file });
+    };
+    const handleAddPhoto = async () => {
+        const res = await launchImageLibrary({ mediaType: 'photo' });
+        photoHandler(res);
+    };
+    const handleAddPhotoCamera = async () => {
+        const res = await launchCamera({ mediaType: 'photo' });
+        photoHandler(res);
+    };
+
+    // useEffect(() => {
+    //     return () => {
+    //         pagination.current = { page: 1, ipp: 10, pages: 1 };
+    //         setScans([]);
+    //     };
+    // }, []);
 
     useEffect(() => {
+        console.log('app domain 00000000000', app.domain);
+        if (app.domain === '') {
+            return;
+        }
+        console.log(
+            'app domain 00000000000---------------------------------------------',
+            app.domain
+        );
         (async () => {
-            // try {
-            const response = await getRequest('/novotradein/app/dashboard');
-            if (response.status === 'ok') {
-                setElements(response.dashboard);
+            const response = await postRequest('/scans', {
+                page: pagination.current.page,
+                ipp: pagination.current.ipp,
+            });
+
+            if (response?.status !== 'ok') {
+                return;
             }
-            dispatch(updateAppInfo({ appraisal: '', searchWord: '' }));
-            // } catch (error) {
-            //     console.log('error', error);
-            // }
-            // console.log(
-            //     'texts',
-            //     texts,
-            //     await getItemFromStorage('translation')
-            // );
+            console.log('response', response.results.records);
+            setScans(response.results.records);
+            pagination.current.pages = response.results.pages;
         })();
-    }, []);
+
+        return () => {
+            pagination.current = { page: 1, ipp: 10, pages: 1 };
+        };
+    }, [app.domain]);
+
+    const handleReachEnd = async () => {
+        console.log(
+            'reached end',
+            pagination.current.page,
+            pagination.current.pages
+        );
+
+        if (pagination.current.page < pagination.current.pages) {
+            pagination.current.page++;
+            const response = await postRequest('/scans', {
+                page: pagination.current.page,
+                ipp: pagination.current.ipp,
+            });
+            console.log('response end', response);
+            setScans(prevScans => [
+                ...prevScans,
+                ...response?.results?.records,
+            ]);
+        }
+
+        //     setIsLoading(false);
+        else {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <ScreenContainer
             nav={navigation}
+            removeBg={true}
             header={
                 <HeaderComponent
-                    title={t('dashboard.title')}
+                    title={'Dashboard'}
                     backBtn={false}
                     leftSide={<UserIcon nav={navigation} />}
                 />
             }>
-            <View style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Icon
-                        icon={'novotradeinLogo'}
-                        width={w(252)}
-                        height={h(38)}
-                    />
+            <CustomModal
+                isVisible={isVisible}
+                buttons={[
+                    { title: 'cancel', onPress: () => setIsVisible(false) },
+                ]}>
+                <View style={styles.btnContainer}>
+                    <View style={styles.btn}>
+                        <CustomIconButton
+                            onPress={handleAddPhoto}
+                            icon={'gallery'}
+                            background={'transparent'}
+                        />
+                        <Text style={styles.btnText}>Library</Text>
+                    </View>
+                    <View style={styles.btn}>
+                        <CustomIconButton
+                            onPress={handleAddPhotoCamera}
+                            icon={'camera'}
+                            background={'transparent'}
+                        />
+                        <Text style={styles.btnText}>Camera</Text>
+                    </View>
                 </View>
-                <FlatList
-                    style={{
-                        flexGrow: 0,
-                    }}
-                    data={elements}
-                    //@ts-ignore
-                    renderItem={({ item }) => {
-                        if (item.section === 'scanvin') {
-                            return (
-                                <ItemWithIcon
-                                    onPress={() => {
-                                        navigation.navigate('ScanVin');
-                                    }}
-                                    icon={'barcodeScanner'}
-                                    name={t('dashboard.buttons.scan')}
-                                />
-                            );
-                        }
-                        if (item.section === 'select') {
-                            return (
-                                <ItemWithIcon
-                                    onPress={() => {
-                                        navigation.navigate(
-                                            'SelectVehicle',
-                                            {}
-                                        );
-                                    }}
-                                    icon={'vehicle'}
-                                    name={t('dashboard.buttons.select')}
-                                />
-                            );
-                        }
-                        if (item.section === 'browse') {
-                            return (
-                                <ItemWithIcon
-                                    onPress={() => {
-                                        navigation.navigate('BrowseAppraisals');
-                                    }}
-                                    icon={'search'}
-                                    name={t('dashboard.buttons.browse')}
-                                />
-                            );
-                        }
-                        if (item.section === 'support') {
-                            return (
-                                <ItemWithIcon
-                                    onPress={() => {
-                                        navigation.navigate('Help');
-                                    }}
-                                    icon={'help'}
-                                    name={t('dashboard.buttons.help')}
-                                />
-                            );
-                        }
-                    }}
-                    keyExtractor={item => item.section}
-                    ItemSeparatorComponent={() => (
-                        <View style={styles.separator} />
-                    )}
+            </CustomModal>
+
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                nestedScrollEnabled={true}
+                data={scans}
+                //@ts-ignore
+                renderItem={({ item }: ItemContent) => {
+                    return <ScanItem item={item} navigation={navigation} />;
+                }}
+                keyExtractor={(item, index) => index.toString()}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+                ListFooterComponent={
+                    <>
+                        {isLoading && (
+                            <ActivityIndicator
+                                size={'large'}
+                                color={Colors.skyBlue}
+                                style={{ marginTop: h(15) }}
+                            />
+                        )}
+                    </>
+                }
+                onEndReached={handleReachEnd}
+                onEndReachedThreshold={1000}
+            />
+
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: h(16),
+                    right: w(0),
+                }}>
+                <CustomIconButton
+                    onPress={() => setIsVisible(true)}
+                    icon={'scan'}
                 />
             </View>
         </ScreenContainer>
@@ -126,12 +212,10 @@ const DashboardScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
+        gap: h(16),
     },
     separator: {
-        height: h(2),
-        backgroundColor: Colors.gray,
+        height: h(8),
     },
     logoContainer: {
         position: 'absolute',
@@ -139,6 +223,20 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         marginBottom: h(96),
+    },
+    btnContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+    },
+
+    btn: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: h(8),
+    },
+    btnText: {
+        color: Colors.white,
     },
 });
 

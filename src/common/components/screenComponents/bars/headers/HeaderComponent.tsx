@@ -50,14 +50,24 @@ const HeaderComponent = ({ title, backBtn, rightSide, leftSide }: Props) => {
                     !backBtn && !leftSide && styles.contentRight,
                 ]}>
                 {backBtn !== false && !leftSide && (
-                    <View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                        }}>
                         <CustomHeaderIconButton
                             onPress={handleBackButton}
-                            icon={'arrowPrevious'}
+                            icon={'arrowLeft'}
                         />
                     </View>
                 )}
-                {leftSide && <View>{leftSide}</View>}
+                {leftSide && (
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                        }}>
+                        {leftSide}
+                    </View>
+                )}
                 <View style={[styles.titleContainer]}>
                     {title && (
                         <Text
@@ -78,16 +88,16 @@ const HeaderComponent = ({ title, backBtn, rightSide, leftSide }: Props) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: Colors.charcoal,
-        borderBottomWidth: h(2),
+        backgroundColor: 'transparent',
+        borderBottomWidth: h(0),
         borderBottomColor: Colors.metal,
     },
     contentContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: h(56),
+        height: h(52),
         marginHorizontal: 0,
-        // backgroundColor: 'green',
+        marginVertical: h(16),
     },
     contentRight: {
         justifyContent: 'flex-end',
@@ -96,13 +106,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: '100%',
         width: '100%',
-        paddingHorizontal: w(56),
+        paddingHorizontal: w(52),
         pointerEvents: 'none',
         justifyContent: 'center',
+        // backgroundColor: 'blue',
     },
     headerTitle: {
         ...commonFonts.boldText,
         textAlign: 'center',
+        fontSize: h(18),
     },
     containerBigIcon: {},
     centerContainer: {},

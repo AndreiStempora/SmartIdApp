@@ -1,7 +1,8 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Icon from '../../icons/Icon.tsx';
-import { f } from '../../../styles/PixelPerfect.tsx';
+import { f, h } from '../../../styles/PixelPerfect.tsx';
+import { Colors } from '../../../styles/constants.tsx';
 
 type Props = {
     onPress: () => void;
@@ -9,13 +10,15 @@ type Props = {
     onPressIn?: () => void;
     onPressOut?: () => void;
     icon: string;
+    border?: string;
+    background?: string;
 };
 type iconProps = {
     iconName: string;
 };
 
 const CustomIcon = ({ iconName }: iconProps) => {
-    return <Icon icon={iconName} width={f(24)} height={f(24)}></Icon>;
+    return <Icon icon={iconName} width={f(24)} height={f(24)} />;
 };
 
 const CustomIconButton = ({
@@ -24,6 +27,8 @@ const CustomIconButton = ({
     onPressIn,
     onPressOut,
     icon,
+    border,
+    background,
 }: Props) => {
     return (
         <TouchableOpacity
@@ -32,7 +37,11 @@ const CustomIconButton = ({
             onLongPress={onLongPress}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
-            style={styles.btn}>
+            style={[
+                styles.btn,
+                border ? { borderColor: border } : null,
+                background ? { backgroundColor: background } : null,
+            ]}>
             <CustomIcon iconName={icon} />
         </TouchableOpacity>
     );
@@ -40,8 +49,12 @@ const CustomIconButton = ({
 
 const styles = StyleSheet.create({
     btn: {
-        padding: 16,
+        padding: h(14),
+        borderRadius: 4,
         alignSelf: 'flex-start',
+        backgroundColor: Colors.primary,
+        borderWidth: 1,
+        borderColor: Colors.primary,
         // margin: 10,
     },
 });

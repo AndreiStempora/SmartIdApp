@@ -17,7 +17,7 @@ const CustomRadioList = ({ list, onChange, error }: Props) => {
     }, [updatedList]);
 
     // useEffect(() => {
-    //     const updatedList = list.map((item: Item) => {
+    //     const updatedList = list.map((item: ScanItem) => {
     //         return {
     //             ...item,
     //             selected: false,

@@ -4,7 +4,6 @@ import { AppDispatch } from '../../store/store';
 import {
     getAppDomain,
     getAppLanguage,
-    getAppraisal,
     getAppToken,
     updateAppInfo,
 } from '../../store/slices/appSlice.tsx';
@@ -24,7 +23,6 @@ const useApiHeaders = () => {
     const BASE_URL = useSelector(getAppDomain);
     const token = useSelector(getAppToken);
     const dispatch = useDispatch<AppDispatch>();
-    const appraisal = useSelector(getAppraisal);
     const language = useSelector(getAppLanguage);
 
     const URL = (url: string) => {
@@ -44,7 +42,7 @@ const useApiHeaders = () => {
         try {
             const response = await axios.get(URL(url), {
                 headers: {
-                    'Novotrade-In': freshToken ? freshToken : token,
+                    smartId: freshToken ? freshToken : token,
                     'App-Version': DeviceInfo.getDeviceId() + '-' + appVersion,
                 },
             });
@@ -111,7 +109,7 @@ const useApiHeaders = () => {
             const response = await axios.post(URL(url), addBody, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Novotrade-in': token,
+                    smartId: token,
                     'App-Version': DeviceInfo.getDeviceId() + '-' + appVersion,
                 },
                 ...config,
@@ -151,7 +149,7 @@ const useApiHeaders = () => {
                     updatePageErrorDetails({
                         headers: {
                             'Content-Type': 'multipart/form-data',
-                            'Novotrade-in': token,
+                            smartId: token,
                             'App-Version':
                                 DeviceInfo.getDeviceId() + '-' + appVersion,
                         },
@@ -166,7 +164,7 @@ const useApiHeaders = () => {
     //
     const setRequestBody = (obj: BodyObject) => {
         const formData = new FormData();
-        formData.append('appraisal', appraisal);
+
         formData.append('code', language);
         for (let item in obj) {
             formData.append(item, obj[item]);
@@ -179,7 +177,7 @@ const useApiHeaders = () => {
         const response = await axios.post(URL(url), obj, {
             headers: {
                 'Content-Type': 'application/json',
-                'Novotrade-in': token,
+                smartId: token,
                 'App-Version': DeviceInfo.getDeviceId() + '-' + appVersion,
             },
         });

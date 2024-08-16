@@ -69,7 +69,7 @@ const CustomInput = ({
                     style={[
                         styles.label,
                         isFocused && styles.labelFocus,
-                        error && styles.labelError,
+                        // error && styles.labelError,
                     ]}>
                     {label}
                 </Text>
@@ -93,6 +93,8 @@ const CustomInput = ({
                         type === 'textarea' && {
                             height: h(24 * Number(multiline)),
                         },
+                        withValue && styles.inputWithValue,
+                        isFocused && styles.inputFocused,
                     ]}
                     placeholder={placeholder}
                     placeholderTextColor={error ? Colors.error : Colors.white}
@@ -118,16 +120,16 @@ const CustomInput = ({
                             style={{ flexGrow: 1 }}
                             onPress={() => setShowPassword(!showPassword)}>
                             <View style={styles.iconPadding}>
-                                <Icon
-                                    icon={
-                                        showPassword
-                                            ? 'visibilityOn'
-                                            : 'visibilityOff'
-                                    }
-                                    fill={Colors.metal}
-                                    width={w(24)}
-                                    height={h(24)}
-                                />
+                                {/*<Icon*/}
+                                {/*    icon={*/}
+                                {/*        showPassword*/}
+                                {/*            ? 'visibilityOn'*/}
+                                {/*            : 'visibilityOff'*/}
+                                {/*    }*/}
+                                {/*    fill={Colors.metal}*/}
+                                {/*    width={w(24)}*/}
+                                {/*    height={h(24)}*/}
+                                {/*/>*/}
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -143,34 +145,36 @@ const CustomInput = ({
 const styles = StyleSheet.create({
     activityIndicator: {},
     inputContainer: {
-        borderBottomWidth: 2,
-        borderColor: Colors.metal,
+        borderWidth: h(1),
+        borderRadius: w(4),
+        backgroundColor: Colors.black300,
+        borderColor: Colors.black400,
         flexDirection: 'row',
 
         // height: h(52),
     },
     inputContainerFocused: {
-        borderColor: Colors.skyBlue,
+        borderColor: Colors.white,
     },
     containerError: {
         borderColor: Colors.error,
     },
     inputContainerWithValue: {
-        borderColor: Colors.white,
+        borderColor: Colors.black400,
     },
     label: {
-        position: 'absolute',
+        // position: 'absolute',
         top: h(4),
         left: 0,
         ...commonFonts.label,
-        marginTop: h(4),
-        color: Colors.metal,
+        marginTop: h(0),
+        color: Colors.grey100,
         pointerEvents: 'none',
-
+        marginBottom: h(10),
         zIndex: 1,
     },
     labelFocus: {
-        color: Colors.skyBlue,
+        color: Colors.white,
     },
     labelError: {
         color: Colors.error,
@@ -181,10 +185,19 @@ const styles = StyleSheet.create({
         // flexGrow: 1,
         flexBasis: '100%',
         flexShrink: 1,
-        paddingTop: h(24),
-        paddingBottom: h(8),
-        height: h(56),
-        paddingHorizontal: 0,
+
+        paddingTop: h(0),
+        paddingBottom: h(0),
+        height: h(48),
+        paddingHorizontal: w(16),
+        alignItems: 'center',
+        color: Colors.grey100,
+    },
+    inputFocused: {
+        color: Colors.white,
+    },
+    inputWithValue: {
+        color: Colors.grey100,
     },
     inputTextArea: {},
     multiInput: {
@@ -204,8 +217,8 @@ const styles = StyleSheet.create({
     iconPadding: {
         // backgroundColor: Colors.white,
         // paddingHorizontal: w(12),
-        width: w(56),
-        height: h(56),
+        // width: w(56),
+        // height: h(56),
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: h(4),
@@ -214,8 +227,8 @@ const styles = StyleSheet.create({
     iconContainer: {
         position: 'absolute',
         right: 0,
-        top: -24,
-        height: h(56),
+        // top: -24,
+        // height: h(56),
         // backgroundColor: 'red',
     },
     iconContainer2: {

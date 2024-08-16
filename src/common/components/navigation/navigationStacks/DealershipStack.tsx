@@ -3,6 +3,7 @@ import {
     createStackNavigator,
     TransitionPresets,
 } from '@react-navigation/stack';
+
 import ScannerScreen from '../../../../screens/dealerships/Scanner/ScannerScreen.tsx';
 import DealershipScreen from '../../../../screens/dealerships/dealerships/DealershipScreen.tsx';
 

@@ -16,16 +16,11 @@ export const AppSlice = createSlice({
     name: 'app',
     initialState: {
         data: {
-            stack: 'dealership',
+            stack: 'authenticated',
             domain: '',
             token: '',
-            appraisal: '',
-            searchWord: '',
             language: 'en',
-            dealerships: [],
-            appraisalDeletedModalVisibility: false,
-            photoUploadingList: [],
-            uploadServiceEnabled: true,
+            connected: true,
         },
         status: 'idle',
         error: null,
@@ -75,11 +70,5 @@ export const getAppStack = (state: RootState) => state.app.data.stack;
 export const getAppDomain = (state: RootState) => state.app.data.domain;
 export const getAppToken = (state: RootState) => state.app.data.token;
 export const getAppLanguage = (state: RootState) => state.app.data.language;
-export const getAppraisal = (state: RootState) => state.app.data.appraisal;
-export const getAppDealerships = (state: RootState) =>
-    state.app.data.dealerships;
 export const getApp = (state: RootState) => state.app.data;
-export const getAppraisalDeletedModalVisibility = (state: RootState) =>
-    state.app.data.appraisalDeletedModalVisibility;
-
 export default AppSlice.reducer;

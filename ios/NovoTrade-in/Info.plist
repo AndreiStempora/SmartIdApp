@@ -39,8 +39,8 @@
 	<string>NovoTrade-in Needs to know your location</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Inter-Medium.ttf</string>
-		<string>Inter-SemiBold.ttf</string>
+		<string>InterTight-Regular.ttf</string>
+		<string>InterTight-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

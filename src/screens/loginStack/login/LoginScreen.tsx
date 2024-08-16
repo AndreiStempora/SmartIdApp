@@ -1,74 +1,49 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View, Image, Text, Keyboard } from 'react-native';
 import ScreenContainer from '../../../common/components/screenComponents/containers/ScreenContainer.tsx';
 import React, { useEffect, useState } from 'react';
 import { Colors, commonFonts } from '../../../common/styles/constants.tsx';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../common/store/store.tsx';
-import { h, w } from '../../../common/styles/PixelPerfect.tsx';
-import Icon from '../../../common/components/icons/Icon.tsx';
-import FormComponent from '../../../common/components/forms/customForm/FormComponent.tsx';
+import { h } from '../../../common/styles/PixelPerfect.tsx';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
-
+import FormComponent from '../../../common/components/forms/customForm/FormComponent.tsx';
+import DeviceInfo from 'react-native-device-info';
 import { updateAppInfo } from '../../../common/store/slices/appSlice.tsx';
+import { useDispatch } from 'react-redux';
+import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '../../../common/components/screenComponents/toasts/CustomToast.tsx';
 import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
-import useText from '../../../common/services/hooks/textHook.tsx';
-import { updateTranslation } from '../../../common/store/slices/translationSlice.tsx';
-
-type Field = {
-    name: string;
-    placeholder: string;
-    type: string;
-    required: boolean;
-    title: string;
-};
+import { AppDispatch } from '../../../common/store/store.tsx';
 
 const LoginScreen = ({ navigation }: any) => {
+    const bundleId = DeviceInfo.getBundleId();
+    const { postRequest } = useApiHeaders();
     const dispatch = useDispatch<AppDispatch>();
     const [formData, setFormData] = useState({});
-    const { postRequest } = useApiHeaders();
-    const { t, texts } = useText();
     const [formError, setFormError] = useState('');
-    const [formFields, setFormFields] = useState<Field[]>([]);
+    const formFields = [
+        {
+            name: 'user',
+            placeholder: '',
+            type: 'text',
+            required: true,
+            title: 'Username',
+        },
+        {
+            name: 'password',
+            placeholder: '',
+            type: 'password',
+            required: true,
+            title: 'Password',
+        },
+    ];
+    const version = DeviceInfo.getVersion();
 
-    useEffect(() => {
-        (async () => {
-            const response = await postRequest('/languages/details', {});
-            if (response.status === 'ok') {
-                dispatch(
-                    updateTranslation(
-                        response.language['novosteer-tradein-app']
-                    )
-                );
-            }
-        })();
-    }, []);
-
-    useEffect(() => {
-        if (texts?.login?.formFields?.user?.length) {
-            setFormFields([
-                {
-                    name: 'user',
-                    placeholder: '',
-                    type: 'text',
-                    required: true,
-                    title: t('login.formFields.user'),
-                },
-                {
-                    name: 'password',
-                    placeholder: '',
-                    type: 'password',
-                    required: true,
-                    title: t('login.formFields.password'),
-                },
-            ]);
-        }
-    }, [texts]);
-
-    const handleLogin = async () => {
-        const response = await postRequest('/novotradein/app/login', formData);
-        if (response.status !== 'ok') {
-            setFormError(t('login.formErrorTitle'));
+    const handleForm = async () => {
+        Keyboard.dismiss();
+        const response = await postRequest('/login', formData);
+        console.log('response', response);
+        if (response?.status !== 'ok') {
+            setFormError(response.status);
         } else {
             dispatch(
                 updateAppInfo({ token: response.token, stack: 'authenticated' })
@@ -76,50 +51,50 @@ const LoginScreen = ({ navigation }: any) => {
         }
     };
 
-    const handleBackToDealership = () => {
-        dispatch(updateAppInfo({ stack: 'dealership' }));
-    };
-
+    useEffect(() => {}, [formError]);
     return (
-        <ScreenContainer nav={navigation}>
+        <ScreenContainer nav={navigation} removeBg={true}>
             <KeyboardAwareScrollView
                 showsVerticalScrollIndicator={false}
                 enableOnAndroid={true}
                 keyboardShouldPersistTaps={'handled'}
                 contentContainerStyle={styles.screenContainer}>
                 <View style={styles.logoContainer}>
-                    <Icon
-                        icon={'logoNovotradeInNew'}
-                        width={w(270)}
-                        height={h(46)}
+                    <Image
+                        style={{
+                            width: h(100),
+                            height: h(62),
+                            resizeMode: 'contain',
+                        }}
+                        source={require('../../../../assets/images/logo.png')}
+                    />
+                    <Text style={styles.title}>
+                        {bundleId.split('.').slice(-1).pop()}
+                    </Text>
+                </View>
+                <View style={styles.formContainer}>
+                    <FormComponent
+                        fields={formFields}
+                        formData={data => {
+                            setFormData(data);
+                        }}
+                        err={formError}
+                        setErr={setFormError}
                     />
                 </View>
-                <View style={{ marginBottom: h(32) }}>
-                    {formFields?.length > 0 && (
-                        <FormComponent
-                            fields={formFields}
-                            formData={data => {
-                                setFormData(data);
-                            }}
-                            err={formError}
-                            setErr={setFormError}
-                        />
-                    )}
-                </View>
-                <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
                     <CustomTextButton
-                        onPress={handleLogin}
-                        text={t('login.signIn')}
+                        onPress={handleForm}
+                        text={'submit'}
+                        stretch={false}
                     />
-                    <TouchableOpacity
-                        onPress={handleBackToDealership}
-                        // activeOpacity={1}
-                    >
-                        <Text style={styles.backToDealershipBtn}>
-                            {t('login.backToDealership')}
-                        </Text>
-                    </TouchableOpacity>
                 </View>
+                <View style={styles.versionContainer}>
+                    <Text style={styles.versionText}>
+                        {bundleId.split('.').slice(-1).pop()} {version}
+                    </Text>
+                </View>
+                <Toast config={toastConfig} />
             </KeyboardAwareScrollView>
         </ScreenContainer>
     );
@@ -131,14 +106,25 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.gray,
     },
     logoContainer: {
+        marginTop: h(82),
         alignItems: 'center',
-        marginBottom: h(96),
+        marginBottom: h(64),
+    },
+    formContainer: {
+        marginBottom: h(64),
+    },
+    title: {
+        marginTop: h(48),
+        textTransform: 'capitalize',
+        ...commonFonts.boldText,
+        fontSize: h(18),
     },
     screenContainer: {
-        flex: 1,
-        marginBottom: 10,
-        justifyContent: 'center',
+        // flex: 1,
+        // marginBottom: 10,
+        // justifyContent: 'center',
         // ...ST.scrollChild,
+        minHeight: '100%',
     },
     screenContent: {
         justifyContent: 'center',
@@ -152,6 +138,20 @@ const styles = StyleSheet.create({
         color: Colors.skyBlue,
         textAlign: 'center',
         paddingVertical: h(14),
+    },
+    versionContainer: {
+        justifyContent: 'center',
+        marginTop: 'auto',
+        marginBottom: h(24),
+    },
+    versionText: {
+        textAlign: 'center',
+        ...commonFonts.regularTitle,
+        textTransform: 'capitalize',
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        marginBottom: h(16),
     },
 });
 export default LoginScreen;

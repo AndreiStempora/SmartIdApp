@@ -1,8 +1,10 @@
 import { f, h } from './PixelPerfect.tsx';
 
 const Fonts = {
-    Med: 'Inter-Medium',
-    Semi: 'Inter-SemiBold',
+    // Med: 'Inter-Medium',
+    // Semi: 'Inter-SemiBold',
+    Reg: 'InterTight-Regular',
+    Semi: 'InterTight-SemiBold',
 };
 const Colors = {
     lightBlack: '#0E1013',
@@ -12,10 +14,18 @@ const Colors = {
     gray: '#3C4043',
     metal: '#8E9297',
     skyBlue: '#54A6FF',
-    white: '#F8F9FA',
+    white: '#FFFFFF',
     error: '#FF4646',
     lime: '#23D354',
     silver: '#BDC1C6',
+    bg: '#161616',
+    toastBg: '#121212',
+    primary: '#E2406B',
+    grey100: '#858585',
+    black100: '#121212',
+    black300: '#262626',
+    black400: '#363636',
+    yellow100: '#D19D36',
 };
 
 //bold = Fonts.Semi
@@ -38,27 +48,27 @@ const commonFonts = {
         color: Colors.white,
     },
     regularText: {
-        fontFamily: Fonts.Med,
+        fontFamily: Fonts.Reg,
         fontSize: f(16),
         lineHeight: f(21),
         color: Colors.white,
     },
     regularTextSmall: {
-        fontFamily: Fonts.Med,
+        fontFamily: Fonts.Reg,
         fontSize: f(14),
         lineHeight: f(21),
         color: Colors.white,
     },
     regularTitle: {
-        fontFamily: Fonts.Med,
+        fontFamily: Fonts.Reg,
         fontSize: f(16),
         lineHeight: h(24),
         color: Colors.white,
     },
     label: {
-        fontFamily: Fonts.Med,
-        fontSize: f(12),
-        lineHeight: f(15.6),
+        fontFamily: Fonts.Semi,
+        fontSize: f(16),
+        lineHeight: f(19.2),
         color: Colors.metal,
     },
 };

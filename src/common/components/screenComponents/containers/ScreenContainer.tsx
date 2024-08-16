@@ -3,26 +3,19 @@ import {
     SafeAreaView,
     StyleSheet,
     ImageBackground,
-    Platform,
     StatusBar,
-    Text,
 } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ErrorScreen from '../errors/ErrorScreen';
 import { h, w } from '../../../styles/PixelPerfect.tsx';
 import { OrientationLocker, PORTRAIT } from 'react-native-orientation-locker';
-import CustomModal from '../../modals/customModal.tsx';
-import {
-    getApp,
-    getAppInfo,
-    updateAppInfo,
-} from '../../../store/slices/appSlice.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../../store/store.tsx';
+import { useSelector } from 'react-redux';
 import { commonFonts } from '../../../styles/constants.tsx';
-import { useRoute } from '@react-navigation/native';
 import { getPageError } from '../../../store/slices/errorSlice.tsx';
+import Toast from 'react-native-toast-message';
+import { getApp } from '../../../store/slices/appSlice.tsx';
+import useSkipInitialRender from '../../../services/hooks/skipInitialrenderHook.tsx';
 
 type Props = {
     children: React.ReactNode;
@@ -37,12 +30,12 @@ type Props = {
     removeBg?: boolean;
 };
 
-const paddingBotForAndroid = () => {
-    if (Platform.OS === 'android') {
-        return 20;
-    }
-    return 0;
-};
+// const paddingBotForAndroid = () => {
+//     if (Platform.OS === 'android') {
+//         return 20;
+//     }
+//     return 0;
+// };
 
 const ScreenContainer = ({
     children,
@@ -55,12 +48,35 @@ const ScreenContainer = ({
 }: Props) => {
     const insets = useSafeAreaInsets();
     const error = useSelector(getPageError);
-    // const error = false;
-    // const app = useSelector(getApp);
+    const app = useSelector(getApp);
+
+    useSkipInitialRender(() => {
+        if (app.connected) {
+            Toast.show({
+                type: 'internetReconnect',
+                text1: 'Connected',
+                position: 'top',
+                autoHide: true,
+                visibilityTime: 1500,
+            });
+        } else {
+            Toast.show({
+                type: 'internetError',
+                text1: 'No internet connection',
+                position: 'top',
+                autoHide: false,
+            });
+        }
+        console.log('this works');
+    }, app.connected);
 
     return (
         <View style={styles.mainPageView}>
-            <StatusBar translucent backgroundColor="transparent" />
+            <StatusBar
+                backgroundColor="#454545"
+                animated={true}
+                barStyle={'light-content'}
+            />
             <OrientationLocker
                 orientation={PORTRAIT}
                 // onChange={orientation => console.log('onChange', orientation)}
@@ -100,7 +116,7 @@ const ScreenContainer = ({
                 </View>
             ) : (
                 <ImageBackground
-                    source={require('../../../../../assets/images/AppBackground.jpg')}
+                    source={require('../../../../../assets/images/AppBackground.png')}
                     style={styles.imgBg}>
                     {header && header}
                     <SafeAreaView
@@ -122,6 +138,7 @@ const ScreenContainer = ({
                                     fullScreen &&
                                         styles.fullContentContainerFull,
                                 ]}>
+                                {/*<Toast config={toastConfig} />*/}
                                 {error ? (
                                     <ErrorScreen nav={nav} />
                                 ) : (
@@ -147,7 +164,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor:'yellow'
     },
-    imgBg: { flex: 1 },
+    imgBg: { flex: 1, backgroundColor: '#161616' },
     safeArea: {
         // backgroundColor:'red',
         flex: 1,
@@ -163,7 +180,7 @@ const styles = StyleSheet.create({
     safeAreaNoHeader: {},
 
     fullContentContainer: {
-        marginVertical: h(16),
+        // marginVertical: h(16),
         flex: 1,
     },
     fullContentContainerFull: {

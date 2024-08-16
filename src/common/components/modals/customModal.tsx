@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 8,
         overflow: 'hidden',
-        backgroundColor: Colors.darkGray,
+        backgroundColor: Colors.black300,
         // backgroundColor: 'red',
     },
     titleContainer: {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         gap: h(12),
     },
     buttonsContainer: {
-        backgroundColor: Colors.gray,
+        backgroundColor: Colors.black400,
         gap: w(2),
         flexDirection: 'row',
         height: h(50),
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         // paddingVertical: h(12),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: Colors.darkGray,
+        backgroundColor: Colors.black300,
         marginTop: h(2),
         flexGrow: 1,
     },
