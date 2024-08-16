@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/InterTight-Regular.ttf",
+      "sha1": "63ceeac81a3a036211fba29046e606752fe7ea8e"
+    },
+    {
+      "path": "assets/fonts/InterTight-SemiBold.ttf",
+      "sha1": "77db62dbddcf448fa1b633e6da3b76480f3ca559"
+    }
+  ]
+}
