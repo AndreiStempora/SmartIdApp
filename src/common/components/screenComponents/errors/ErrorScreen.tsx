@@ -36,7 +36,8 @@ const ErrorScreen = ({ nav }: Props) => {
         setTimeout(() => {
             setRefreshing(false);
             dispatch(updatePageError(false));
-            nav.replace(route.name);
+            // nav.replace(route.name);
+            nav.popToTop();
         }, 1000);
     }, []);
 
@@ -97,10 +98,11 @@ const ErrorScreen = ({ nav }: Props) => {
                                                     </Text>
                                                 </View>
                                             ) : (
-                                                <CustomTextButton
-                                                    onPress={sendReport}
-                                                    text={t('pageError.button')}
-                                                />
+                                                <></>
+                                                // <CustomTextButton
+                                                //     onPress={sendReport}
+                                                //     text={t('pageError.button')}
+                                                // />
                                             )}
                                         </>
                                     ) : (

@@ -3,6 +3,7 @@ import Icon from '../../icons/Icon.tsx';
 import { f, h, w } from '../../../styles/PixelPerfect.tsx';
 import React, { useEffect } from 'react';
 import { Colors, commonFonts } from '../../../styles/constants.tsx';
+import IdHeader from '../bars/headers/IdHeader.tsx';
 
 type Props = {
     navigation: any;
@@ -11,8 +12,8 @@ type Props = {
     iconName: string;
     footerBtn?: React.ReactNode;
     dots?: boolean;
-    textTitle: string;
-    textContent: string;
+    textTitle?: string;
+    textContent?: string;
 };
 const Analyse = ({
     navigation,
@@ -35,25 +36,16 @@ const Analyse = ({
 
     return (
         <View style={[styles.mainContainer]}>
-            {backBtn && (
-                <View style={styles.backBtnContainer}>
-                    <TouchableOpacity
-                        style={styles.backBtn}
-                        onPress={() => {
-                            navigation.goBack();
-                        }}>
-                        <Icon icon={'arrowLeft'} height={h(24)} width={w(24)} />
-                        <Text style={styles.backBtnText}>Back</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+            {backBtn && <IdHeader navigation={navigation} />}
             <View style={[styles.mainBlock, { borderColor: borderColor }]}>
                 <Icon icon={iconName} height={h(64)} width={w(64)} />
-                <Text style={styles.text1}>{textTitle}</Text>
-                <Text style={[styles.text2]}>
-                    {textContent}
-                    {'.'.repeat(dotCount)}
-                </Text>
+                {textTitle && <Text style={styles.text1}>{textTitle}</Text>}
+                {textContent && (
+                    <Text style={[styles.text2]}>
+                        {textContent}
+                        {'.'.repeat(dotCount)}
+                    </Text>
+                )}
             </View>
             {footerBtn && <View style={styles.btnContainer}>{footerBtn}</View>}
         </View>
@@ -83,11 +75,15 @@ const styles = StyleSheet.create({
     text1: {
         ...commonFonts.boldText,
         fontSize: f(18),
+        paddingHorizontal: w(32),
+        textAlign: 'center',
     },
     text2: {
         ...commonFonts.regularText,
         color: Colors.white,
         minWidth: w(105),
+        paddingHorizontal: w(32),
+        textAlign: 'center',
     },
     backBtn: {
         flexDirection: 'row',

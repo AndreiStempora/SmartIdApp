@@ -11,15 +11,17 @@ export type MatchItem = {
     details: {}[];
     images: string[];
     reference: string;
+    code?: string;
 };
 type Props = {
     item: MatchItem;
     navigation: any;
+    code: string;
 };
-const MatchesItem = ({ item, navigation }: Props) => {
+const MatchesItem = ({ item, code, navigation }: Props) => {
     const handleSeeDetails = () => {
-        console.log('See details');
-        navigation.navigate('Details', { ...item });
+        console.log('See details', item, code);
+        navigation.navigate('Details', { ...item, code: code });
     };
     return (
         <View style={styles.itemContainer}>

@@ -27,6 +27,12 @@ const MatchesScreen = ({ navigation }: any) => {
     useEffect(() => {
         console.log(router.params, '<><><>');
         setItem(router.params as ItemContent);
+        //@ts-ignore
+        if (router.params?.file) {
+            //@ts-ignore
+            setItem(prev => ({ ...prev, tn: router.params?.file.uri }));
+            console.log('fileUri set!!!!!!!');
+        }
         (async () => {
             const response = await postRequest('/scan', {
                 //@ts-ignore
@@ -35,11 +41,16 @@ const MatchesScreen = ({ navigation }: any) => {
             if (response?.matches !== undefined) {
                 setMatches(response.matches);
             }
+            console.log(response.matches, 'matches');
         })();
     }, []);
 
     const handleBack = () => {
         navigation.navigate('Dashboard');
+    };
+
+    const handleAuthenticity = () => {
+        navigation.navigate('Authenticity', { ...item });
     };
     return (
         <ScreenContainer nav={navigation} fullScreen={true}>
@@ -53,7 +64,7 @@ const MatchesScreen = ({ navigation }: any) => {
             </View>
             <View style={styles.contentContainer}>
                 <CustomTextButton
-                    onPress={() => {}}
+                    onPress={handleAuthenticity}
                     text={'Check authenticity'}
                     icon={'verified'}
                 />
@@ -62,7 +73,12 @@ const MatchesScreen = ({ navigation }: any) => {
                     data={matches}
                     renderItem={({ item }) => {
                         return (
-                            <MatchesItem item={item} navigation={navigation} />
+                            <MatchesItem
+                                item={item}
+                                //@ts-ignore
+                                code={router.params.code}
+                                navigation={navigation}
+                            />
                         );
                     }}
                     keyExtractor={(item, index) => index.toString()}

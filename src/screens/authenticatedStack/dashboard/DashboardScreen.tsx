@@ -25,6 +25,7 @@ import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
 import { Colors } from '../../../common/styles/constants.tsx';
 import { useSelector } from 'react-redux';
 import { getApp } from '../../../common/store/slices/appSlice.tsx';
+import { useIsFocused } from '@react-navigation/native';
 
 export type ItemContent = {
     title: string;
@@ -47,6 +48,7 @@ const DashboardScreen = ({ navigation }: any) => {
     const [isVisible, setIsVisible] = useState(false);
     const pagination = useRef({ page: 1, ipp: 10, pages: 1 });
     const { postRequest } = useApiHeaders();
+    const isFocused = useIsFocused();
     const app = useSelector(getApp);
 
     const photoHandler = (res: ImagePickerResponse) => {
@@ -80,40 +82,29 @@ const DashboardScreen = ({ navigation }: any) => {
     // }, []);
 
     useEffect(() => {
-        console.log('app domain 00000000000', app.domain);
         if (app.domain === '') {
             return;
         }
-        console.log(
-            'app domain 00000000000---------------------------------------------',
-            app.domain
-        );
-        (async () => {
-            const response = await postRequest('/scans', {
-                page: pagination.current.page,
-                ipp: pagination.current.ipp,
-            });
+        isFocused &&
+            (async () => {
+                const response = await postRequest('/scans', {
+                    page: pagination.current.page,
+                    ipp: pagination.current.ipp,
+                });
 
-            if (response?.status !== 'ok') {
-                return;
-            }
-            console.log('response', response.results.records);
-            setScans(response.results.records);
-            pagination.current.pages = response.results.pages;
-        })();
-
+                if (response?.status !== 'ok') {
+                    return;
+                }
+                setScans(response.results.records);
+                pagination.current.pages = response.results.pages;
+            })();
+        console.log('xx', pagination.current);
         return () => {
             pagination.current = { page: 1, ipp: 10, pages: 1 };
         };
-    }, [app.domain]);
+    }, [app.domain, isFocused]);
 
     const handleReachEnd = async () => {
-        console.log(
-            'reached end',
-            pagination.current.page,
-            pagination.current.pages
-        );
-
         if (pagination.current.page < pagination.current.pages) {
             pagination.current.page++;
             const response = await postRequest('/scans', {
@@ -125,10 +116,7 @@ const DashboardScreen = ({ navigation }: any) => {
                 ...prevScans,
                 ...response?.results?.records,
             ]);
-        }
-
-        //     setIsLoading(false);
-        else {
+        } else {
             setIsLoading(false);
         }
     };
@@ -192,7 +180,7 @@ const DashboardScreen = ({ navigation }: any) => {
                     </>
                 }
                 onEndReached={handleReachEnd}
-                onEndReachedThreshold={1000}
+                onEndReachedThreshold={0.5}
             />
 
             <View

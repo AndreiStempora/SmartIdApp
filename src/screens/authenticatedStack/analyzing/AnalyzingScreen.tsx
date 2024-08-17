@@ -3,7 +3,7 @@ import ScreenContainer from '../../../common/components/screenComponents/contain
 import Analyse from '../../../common/components/screenComponents/analysingTemplate/Analyse.tsx';
 import { Colors } from '../../../common/styles/constants.tsx';
 import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
-import { useRoute } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import useBlob from '../../../common/services/hooks/blobHook.tsx';
 
 const AnalyzingScreen = ({ navigation }: any) => {
@@ -11,25 +11,44 @@ const AnalyzingScreen = ({ navigation }: any) => {
     const { upload } = useBlob();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-
+    const inFocus = useIsFocused();
     useEffect(() => {
+        const abortController = new AbortController();
+
         try {
-            (async () => {
-                //@ts-ignore
-                const res = await upload({ image: { ...route.params.file } });
-                if (res.status === 'ok') {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        navigation.navigate('Matches', { code: res.code });
-                    }, 2000);
-                } else {
-                    setError(true);
-                }
-            })();
+            inFocus &&
+                (async () => {
+                    const res = await upload(
+                        //@ts-ignore
+                        { image: { ...route.params.file } },
+                        { signal: abortController.signal }
+                    );
+                    if (res.status === 'ok') {
+                        setSuccess(true);
+                        setTimeout(() => {
+                            navigation.navigate('Matches', {
+                                code: res.code,
+                                //@ts-ignore
+                                file: { ...route.params.file },
+                            });
+                        }, 2000);
+                    } else {
+                        setError(true);
+                    }
+                })();
         } catch (error) {
             console.error('Error in AnalyzingScreen: ', error);
         }
-    }, []);
+
+        return () => {
+            abortController.abort();
+            console.log('aborted');
+        };
+    }, [inFocus]);
+
+    const handleAbort = () => {
+        navigation.navigate('Dashboard');
+    };
 
     return (
         <ScreenContainer nav={navigation} removeBg={true}>
@@ -45,7 +64,7 @@ const AnalyzingScreen = ({ navigation }: any) => {
                         backBtn={false}
                         footerBtn={
                             <CustomTextButton
-                                onPress={() => {}}
+                                onPress={handleAbort}
                                 text={'cancel'}
                                 background={Colors.black300}
                                 border={Colors.black400}
