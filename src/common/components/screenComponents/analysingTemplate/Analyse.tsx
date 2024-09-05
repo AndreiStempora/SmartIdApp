@@ -46,6 +46,9 @@ const Analyse = ({
                         {'.'.repeat(dotCount)}
                     </Text>
                 )}
+                {!textContent && dots && (
+                    <Text style={[styles.text2]}>{'.'.repeat(dotCount)}</Text>
+                )}
             </View>
             {footerBtn && <View style={styles.btnContainer}>{footerBtn}</View>}
         </View>
@@ -63,8 +66,8 @@ const styles = StyleSheet.create({
         bottom: h(16),
     },
     mainBlock: {
-        width: w(255),
-        height: h(255),
+        width: w(252),
+        height: h(252),
         borderWidth: 1,
         borderColor: Colors.black400,
         justifyContent: 'center',

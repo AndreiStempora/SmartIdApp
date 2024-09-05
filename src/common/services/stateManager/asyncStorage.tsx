@@ -6,7 +6,8 @@ const defaultValues: DefaultValues = {
     //when you change this also change in ts types file
     app: {
         stack: 'authenticated',
-        domain: 'https://v2.smartid.stempora.me/api/smartid-ai/',
+        // domain: 'https://v2.smartid.stempora.me/api/smartid-ai/',
+        domain: 'https://smartid.stempora.com/api/smartid-ai/',
         token: '',
         language: 'en',
         connected: true,

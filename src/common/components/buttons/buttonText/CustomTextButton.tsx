@@ -11,6 +11,8 @@ type Props = {
     border?: string;
     icon?: string;
     iconRight?: boolean;
+    red?: boolean;
+    disabled?: boolean;
 };
 const CustomTextButton = ({
     onPress,
@@ -20,9 +22,12 @@ const CustomTextButton = ({
     border,
     icon,
     iconRight,
+    red,
+    disabled,
 }: Props) => {
     return (
         <TouchableOpacity
+            disabled={disabled ? disabled : false}
             // activeOpacity={1}
             onPress={onPress}
             style={[
@@ -43,10 +48,15 @@ const CustomTextButton = ({
             {/*        end={{ x: 1, y: 0.5 }}*/}
             {/*        style={styles.linearGradient2}>*/}
             {icon && !iconRight && (
-                <Icon icon={icon} height={h(24)} width={w(24)} />
+                <Icon
+                    icon={icon}
+                    height={h(24)}
+                    width={w(24)}
+                    fill={Colors.white}
+                />
             )}
 
-            <Text style={styles.text}>{text}</Text>
+            <Text style={[styles.text, red && styles.red]}>{text}</Text>
             {icon && iconRight && (
                 <Icon icon={icon} height={h(24)} width={w(24)} />
             )}
@@ -96,6 +106,9 @@ const styles = StyleSheet.create({
         top: h(2),
         borderRadius: h(25),
         overflow: 'hidden',
+    },
+    red: {
+        color: Colors.error,
     },
 });
 

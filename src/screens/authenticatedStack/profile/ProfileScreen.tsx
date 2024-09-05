@@ -32,8 +32,9 @@ const ProfileScreen = ({ navigation }: any) => {
         }
     };
     return (
-        <ScreenContainer nav={navigation} removeBg={true}>
-            <IdHeader navigation={navigation} title={'My Account'} />
+        <ScreenContainer nav={navigation} fullScreen={true}>
+            {/*<View></View>*/}
+
             <CustomModal
                 isVisible={modalVisible}
                 buttons={[
@@ -56,6 +57,9 @@ const ProfileScreen = ({ navigation }: any) => {
                     Please confirm if you want to log out.
                 </Text>
             </CustomModal>
+            {/*<View style={styles.buttonFloater}>*/}
+            <IdHeader navigation={navigation} title={'My Account'} />
+            {/*</View>*/}
             <View style={styles.userContainer}>
                 <View style={styles.avatar}>
                     <Text style={styles.avatarText}>
@@ -68,7 +72,6 @@ const ProfileScreen = ({ navigation }: any) => {
                 </Text>
             </View>
             <View style={styles.listContainer}>
-                <></>
                 <ItemWithIcon
                     onPress={() => {
                         setModalVisible(true);
@@ -86,6 +89,7 @@ const styles = StyleSheet.create({
     userContainer: {
         alignItems: 'center',
         marginTop: h(84),
+        paddingHorizontal: w(16),
     },
     userBubbleContainer: {
         width: w(64),
@@ -128,13 +132,23 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.black400,
         paddingHorizontal: h(16),
+        marginHorizontal: w(16),
         paddingVertical: h(11),
         borderRadius: w(8),
         backgroundColor: Colors.black300,
+        // backgroundColor: 'red',
     },
     modalTitle: {
         ...commonFonts.boldText,
         textAlign: 'center',
+    },
+    buttonFloater: {
+        position: 'absolute',
+        top: h(0),
+        left: w(0),
+        width: '100%',
+        backgroundColor: 'red',
+        height: '100%',
     },
 });
 

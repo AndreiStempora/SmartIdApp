@@ -46,7 +46,7 @@ const useApiHeaders = () => {
                     'App-Version': DeviceInfo.getDeviceId() + '-' + appVersion,
                 },
             });
-            console.log(response, 'response.data +++');
+            // console.log(response, 'response.data +++');
             if (response.data.status === 'auth') {
                 await dispatch(updateAppInfo({ token: '', stack: 'login' }));
 

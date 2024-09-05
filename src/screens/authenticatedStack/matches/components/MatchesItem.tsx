@@ -1,8 +1,9 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { h, w } from '../../../../common/styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import CustomTextButton from '../../../../common/components/buttons/buttonText/CustomTextButton.tsx';
 import ConfidenceContainer from '../../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
+import CustomImageComponent from '../../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
 
 export type MatchItem = {
     brand: string;
@@ -12,22 +13,46 @@ export type MatchItem = {
     images: string[];
     reference: string;
     code?: string;
+    position: number;
+    selectedPos: boolean;
 };
 type Props = {
     item: MatchItem;
     navigation: any;
     code: string;
+    changeSelectedPos: (confidence: number) => void;
+    fakeResult?: null | string;
 };
-const MatchesItem = ({ item, code, navigation }: Props) => {
+const MatchesItem = ({
+    navigation,
+    item,
+    code,
+    changeSelectedPos,
+    fakeResult,
+}: Props) => {
     const handleSeeDetails = () => {
-        console.log('See details', item, code);
-        navigation.navigate('Details', { ...item, code: code });
+        console.log('See details', item, code, fakeResult);
+        navigation.navigate('Details', {
+            ...item,
+            code: code,
+            fakeResult: fakeResult,
+        });
     };
     return (
         <View style={styles.itemContainer}>
             <View style={styles.imageContainer}>
-                <Image style={styles.img} source={{ uri: item.images[0] }} />
-                <ConfidenceContainer confidence={item.confidence} />
+                <CustomImageComponent
+                    image={item.images[0]}
+                    btnPosition={{ top: h(2), right: 2 }}
+                    resizeMode={'contain'}
+                />
+                <ConfidenceContainer
+                    confidence={item.confidence}
+                    selectedPos={item.selectedPos}
+                    changeSelectedPos={() => {
+                        changeSelectedPos(item.position);
+                    }}
+                />
             </View>
 
             <Text style={styles.title}>{item.brand}</Text>
@@ -47,21 +72,24 @@ const MatchesItem = ({ item, code, navigation }: Props) => {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        gap: h(16),
+        gap: h(8),
     },
     imageContainer: {
         width: '100%',
         height: h(210),
         backgroundColor: Colors.white,
+        borderRadius: w(8),
+        marginBottom: h(8),
     },
     img: {
         width: '100%',
         height: '100%',
-        resizeMode: 'contain',
+        resizeMode: 'cover',
     },
     title: {
         ...commonFonts.label,
         color: Colors.white,
+        // backgroundColor: 'red',
     },
     description: {
         ...commonFonts.regularTextSmall,
@@ -69,6 +97,9 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
         gap: h(8),
+        // marginBottom: h(16),
+        marginBottom: h(8),
+        // backgroundColor: 'red',
     },
     confidenceContainer: {
         position: 'absolute',

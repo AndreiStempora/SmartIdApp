@@ -1,14 +1,34 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { h, w } from '../../../styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../../styles/constants.tsx';
+import Icon from '../../icons/Icon.tsx';
 
 type Props = {
     confidence: number;
+    selectedPos: boolean;
+    changeSelectedPos?: () => void;
+    cssPosition?: { bottom: number; right: number };
 };
-const ConfidenceContainer = ({ confidence }: Props) => {
+const ConfidenceContainer = ({
+    confidence,
+    selectedPos,
+    changeSelectedPos,
+    cssPosition,
+}: Props) => {
     return (
-        <View style={styles.mainContainer}>
+        <TouchableOpacity
+            style={[styles.mainContainer, cssPosition]}
+            onPress={() => {
+                changeSelectedPos && changeSelectedPos();
+            }}
+            disabled={selectedPos}>
             <View style={styles.confidenceContainer}>
+                <Icon
+                    icon={selectedPos ? 'checked' : 'unchecked'}
+                    width={w(24)}
+                    height={24}
+                    fill={confidence < 70 ? Colors.yellow100 : Colors.lime}
+                />
                 <Text
                     style={[
                         styles.confidenceText,
@@ -17,17 +37,18 @@ const ConfidenceContainer = ({ confidence }: Props) => {
                     {confidence}%
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     mainContainer: {
-        width: '100%',
+        // width: '100%',
         position: 'absolute',
         bottom: h(8),
         right: w(8),
         alignItems: 'flex-end',
+        // backgroundColor: 'green',
     },
     confidenceContainer: {
         height: h(43),
@@ -39,6 +60,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: w(12),
         borderRadius: w(8),
         // flexGrow: 0,
+        flexDirection: 'row',
+        gap: w(8),
     },
     confidenceText: {
         ...commonFonts.regularText,

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
+    RefreshControl,
     StyleSheet,
     Text,
     View,
@@ -35,6 +36,7 @@ export type ItemContent = {
     code: string;
     ref: string;
     conf: number;
+    fakeResult: string | null;
 };
 
 type File = {
@@ -47,6 +49,7 @@ const DashboardScreen = ({ navigation }: any) => {
     const [scans, setScans] = useState<ItemContent[]>([]);
     const [isVisible, setIsVisible] = useState(false);
     const pagination = useRef({ page: 1, ipp: 10, pages: 1 });
+    const [refresh, setRefresh] = useState(false);
     const { postRequest } = useApiHeaders();
     const isFocused = useIsFocused();
     const app = useSelector(getApp);
@@ -85,7 +88,7 @@ const DashboardScreen = ({ navigation }: any) => {
         if (app.domain === '') {
             return;
         }
-        isFocused &&
+        (isFocused || refresh) &&
             (async () => {
                 const response = await postRequest('/scans', {
                     page: pagination.current.page,
@@ -99,10 +102,12 @@ const DashboardScreen = ({ navigation }: any) => {
                 pagination.current.pages = response.results.pages;
             })();
         console.log('xx', pagination.current);
+        setRefresh(false);
         return () => {
             pagination.current = { page: 1, ipp: 10, pages: 1 };
+            setScans([]);
         };
-    }, [app.domain, isFocused]);
+    }, [app.domain, isFocused, refresh]);
 
     const handleReachEnd = async () => {
         if (pagination.current.page < pagination.current.pages) {
@@ -124,7 +129,6 @@ const DashboardScreen = ({ navigation }: any) => {
     return (
         <ScreenContainer
             nav={navigation}
-            removeBg={true}
             header={
                 <HeaderComponent
                     title={'Dashboard'}
@@ -161,7 +165,16 @@ const DashboardScreen = ({ navigation }: any) => {
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
                 nestedScrollEnabled={true}
+                contentContainerStyle={{ paddingBottom: h(16) }}
                 data={scans}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                        onRefresh={async () => {
+                            setRefresh(true);
+                        }}
+                    />
+                }
                 //@ts-ignore
                 renderItem={({ item }: ItemContent) => {
                     return <ScanItem item={item} navigation={navigation} />;

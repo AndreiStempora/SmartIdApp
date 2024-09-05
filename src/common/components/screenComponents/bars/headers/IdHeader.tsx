@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from '../../../icons/Icon.tsx';
 import { h, w } from '../../../../styles/PixelPerfect.tsx';
 import React from 'react';
-import { commonFonts } from '../../../../styles/constants.tsx';
+import { Colors, commonFonts } from '../../../../styles/constants.tsx';
 
 type Props = {
     navigation: any;
@@ -13,19 +13,19 @@ type Props = {
 const IdHeader = ({ navigation, title, navigate }: Props) => {
     return (
         <View style={styles.headerContainer}>
-            <View style={styles.backBtnContainer}>
-                <TouchableOpacity
-                    style={styles.backBtn}
-                    onPress={() => {
-                        if (navigate) {
-                            navigate();
-                            return;
-                        }
-                        navigation.goBack();
-                    }}>
-                    <Icon icon={'backBtnIcon'} height={h(39)} width={h(39)} />
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+                style={styles.backBtnContainer}
+                onPress={() => {
+                    if (navigate) {
+                        navigate();
+                        return;
+                    }
+                    navigation.goBack();
+                }}>
+                <View style={styles.backBtn}>
+                    <Icon icon={'backArrowNew'} height={h(24)} width={w(24)} />
+                </View>
+            </TouchableOpacity>
             {title && (
                 <Text numberOfLines={1} style={styles.pageTitle}>
                     {title}
@@ -43,30 +43,41 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: h(16),
         alignItems: 'center',
-        paddingHorizontal: w(0),
+
+        // backgroundColor: 'red',
+        paddingHorizontal: w(16),
     },
     backBtn: {
-        flexDirection: 'row',
+        backgroundColor: Colors.black300,
+        // flexDirection: 'row',
+        width: w(40),
+        height: w(40),
+        justifyContent: 'center',
         alignItems: 'center',
-        gap: w(6),
+        borderWidth: 1,
+        borderColor: Colors.black400,
+        borderRadius: w(40),
+        // alignItems: 'center',
+        // gap: w(6),
     },
     backBtnContainer: {
         width: w(52),
-        height: h(52),
+        height: w(52),
         justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor: 'red',
         position: 'absolute',
-        left: w(-6),
+        left: w(10),
         zIndex: 1,
     },
     pageTitle: {
         ...commonFonts.boldText,
         fontSize: w(18),
-        color: 'white',
+        color: Colors.white,
         textAlign: 'center',
         width: '100%',
         paddingHorizontal: w(52),
+        // backgroundColor: Colors.black300,
     },
 });
 

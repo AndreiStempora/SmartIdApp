@@ -1,19 +1,20 @@
 import {
-    View,
     Modal,
-    StyleSheet,
-    TouchableOpacity,
-    Text,
     StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import React from 'react';
 import { h, w } from '../../styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../styles/constants.tsx';
+import React from 'react';
+import Icon from '../icons/Icon.tsx';
 
 type Props = {
     children: React.ReactNode;
     isVisible: boolean;
-    setIsVisible?: () => void;
+    setVisibility?: (el: boolean) => void;
     animationType?: 'none' | 'slide' | 'fade';
     title?: string;
     blueTitle?: boolean;
@@ -22,18 +23,14 @@ type Props = {
         onPress: () => void;
         color?: 'red' | 'blue';
     }[];
-    closeOutside?: boolean;
 };
-
-const CustomModal = ({
+const PictureModal = ({
     children,
     isVisible,
     animationType,
+    setVisibility,
     title,
     blueTitle,
-    buttons,
-    closeOutside,
-    setIsVisible,
 }: Props) => {
     return (
         <Modal
@@ -58,29 +55,17 @@ const CustomModal = ({
                         )}
                         {children}
                     </View>
-                    <View style={styles.buttonsContainer}>
-                        {buttons.map((button, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                // activeOpacity={1}
-                                onPress={button.onPress}
-                                style={[
-                                    styles.button,
-                                    buttons.length == 2 && styles.doubleButton,
-                                ]}>
-                                <Text
-                                    style={[
-                                        styles.buttonTitle,
-                                        button.color == 'red' &&
-                                            styles.buttonTitleRed,
-                                        button.color == 'blue' &&
-                                            styles.buttonTitleBlue,
-                                    ]}>
-                                    {button.title}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                    <TouchableOpacity
+                        style={styles.btnContainer}
+                        onPress={() => {
+                            if (setVisibility) {
+                                setVisibility(false);
+                            }
+                        }}>
+                        <View style={styles.btn}>
+                            <Icon icon={'close'} width={w(24)} height={h(24)} />
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -88,23 +73,21 @@ const CustomModal = ({
 };
 
 const styles = StyleSheet.create({
-    modal: {
-        backgroundColor: 'red',
-    },
+    modal: {},
     flex: {
         flex: 1,
-        // backgroundColor: '#30578E80',
+        backgroundColor: '#30578E80',
     },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)',
-        paddingHorizontal: w(16),
+        paddingHorizontal: w(0),
     },
     contentContainer: {
         width: '100%',
-        borderRadius: 8,
+        // borderRadius: 8,
         overflow: 'hidden',
         backgroundColor: Colors.black300,
         // backgroundColor: 'red',
@@ -124,8 +107,8 @@ const styles = StyleSheet.create({
         color: Colors.skyBlue,
     },
     textContainer: {
-        paddingHorizontal: w(24),
-        paddingVertical: h(24),
+        paddingHorizontal: w(0),
+        paddingVertical: h(0),
         alignItems: 'center',
         gap: h(12),
     },
@@ -147,7 +130,7 @@ const styles = StyleSheet.create({
         width: '50%',
     },
     buttonTitle: {
-        ...commonFonts.regularText,
+        ...commonFonts.boldTitle,
         textTransform: 'capitalize',
     },
     buttonTitleRed: {
@@ -156,6 +139,24 @@ const styles = StyleSheet.create({
     buttonTitleBlue: {
         color: Colors.skyBlue,
     },
+
+    btnContainer: {
+        position: 'absolute',
+        top: h(19),
+        right: w(10),
+        padding: w(6),
+        // backgroundColor: 'red',
+    },
+    btn: {
+        borderWidth: 1,
+        borderColor: Colors.black400,
+        borderRadius: 50,
+        width: w(40),
+        height: w(40),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.black300,
+    },
 });
 
-export default CustomModal;
+export default PictureModal;

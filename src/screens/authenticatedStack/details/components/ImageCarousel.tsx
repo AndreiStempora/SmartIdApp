@@ -1,9 +1,13 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useRef } from 'react';
 import { h, w } from '../../../../common/styles/PixelPerfect';
 import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
+import CustomImageComponent from '../../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
 
-const ImageCarousel = ({ images }) => {
+type Props = {
+    images: string[];
+};
+const ImageCarousel = ({ images }: Props) => {
     const ref1 = useRef(null);
     const [screenWidth, setScreenWidth] = React.useState(0);
     const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -23,10 +27,11 @@ const ImageCarousel = ({ images }) => {
                 // scrollEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
+                renderItem={({ item }) => (
                     <View
                         style={[styles.imageContainer, { width: screenWidth }]}>
-                        <Image style={styles.img} source={{ uri: item }} />
+                        {/*<Image style={styles.img} source={{ uri: item }} />*/}
+                        <CustomImageComponent image={item} />
                     </View>
                 )}
                 onTouchMove={e => {

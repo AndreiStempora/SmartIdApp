@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ScreenContainer from '../../../common/components/screenComponents/containers/ScreenContainer.tsx';
 import React, { useEffect, useState } from 'react';
 import { h, w } from '../../../common/styles/PixelPerfect.tsx';
@@ -13,11 +13,16 @@ import DetailsList from './components/DetailsList.tsx';
 import ImageCarousel from './components/ImageCarousel.tsx';
 import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
 import CustomModal from '../../../common/components/modals/customModal.tsx';
+import CustomImageComponent from '../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
+import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
+import HiddenButton from './components/HiddenButton.tsx';
 
 const DetailsScreen = ({ navigation }: any) => {
+    useAndroidBackButton();
     const router = useRoute();
     const { postRequest } = useApiHeaders();
     const [isVisible, setIsVisible] = useState(false);
+    // const [isVisibleNew, setIsVisibleNew] = useState(false);
     const [error, setError] = useState(false);
     const [item, setItem] = useState<MatchItem>({
         brand: '',
@@ -27,13 +32,15 @@ const DetailsScreen = ({ navigation }: any) => {
         images: [],
         reference: '',
         code: '',
+        position: 0,
+        selectedPos: false,
     });
     const handleRegisterWatch = async () => {
         console.log('register watch', item);
         const response = await postRequest('/register', {
             code: item.code,
-            reference: item.reference,
-            model: item.model,
+            // reference: item.reference,
+            model: item.reference,
         });
         if (response.status === 'ok') {
             setIsVisible(true);
@@ -44,9 +51,11 @@ const DetailsScreen = ({ navigation }: any) => {
     };
     useEffect(() => {
         setItem(router.params as MatchItem);
-        console.log('images', item.images);
     }, []);
 
+    const handleAuthenticity = () => {
+        navigation.navigate('Authenticity', { ...item });
+    };
     return (
         <ScreenContainer nav={navigation} fullScreen={true}>
             <CustomModal
@@ -75,26 +84,51 @@ const DetailsScreen = ({ navigation }: any) => {
                 {item.images.length !== 1 ? (
                     <ImageCarousel images={item.images} />
                 ) : (
-                    <Image
-                        style={styles.img}
-                        source={{ uri: item.images[0] }}
+                    <CustomImageComponent
+                        image={item.images[0]}
+                        resizeMode={'contain'}
+                        // btnPosition={{ top: h(20), right: w(16) }}
                     />
                 )}
-                <ConfidenceContainer confidence={item.confidence} />
+                <ConfidenceContainer
+                    confidence={item.confidence}
+                    selectedPos={item.selectedPos}
+                    cssPosition={{ bottom: h(16), right: w(16) }}
+                />
             </View>
             <View style={styles.contentContainer}>
-                <CustomTextButton
-                    onPress={handleRegisterWatch}
-                    text={'register watch'}
-                    icon={'watch'}
-                    background={Colors.black300}
-                    border={Colors.black400}
+                <View style={styles.btnContainer}>
+                    <View style={styles.individualBtnContainer}>
+                        <CustomTextButton
+                            onPress={handleRegisterWatch}
+                            text={'register'}
+                            icon={'watch'}
+                            background={Colors.black300}
+                            border={Colors.black400}
+                        />
+                    </View>
+                    <View style={styles.individualBtnContainer}>
+                        <CustomTextButton
+                            onPress={handleAuthenticity}
+                            text={'Authenticity'}
+                            icon={'verified'}
+                            background={Colors.black300}
+                            border={Colors.black400}
+                        />
+                    </View>
+                </View>
+                <HiddenButton
+                    navigation={navigation}
+                    code={item.code}
+                    //@ts-ignore
+                    fakeRegister={router.params.fakeResult}
                 />
                 <View style={styles.listContainer}>
                     {/*<ImageCarousel images={dummyImages} />*/}
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         style={{ flex: 1 }}
+                        contentContainerStyle={{ paddingBottom: h(16) }}
                         data={item.details}
                         keyExtractor={(item, index) => index.toString()}
                         //@ts-ignore
@@ -110,13 +144,16 @@ const DetailsScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
+    individualBtnContainer: {
+        flex: 1,
+    },
     listContainer: {
-        paddingBottom: h(16),
+        // paddingBottom: h(),
         flexGrow: 1,
     },
     contentContainer: {
         paddingHorizontal: w(16),
-        gap: h(24),
+        // gap: h(24),
         marginTop: h(16),
         flex: 1,
     },
@@ -147,12 +184,16 @@ const styles = StyleSheet.create({
     buttonFloater: {
         position: 'absolute',
         top: h(0),
-        left: w(16),
+        left: w(0),
     },
     img: {
         width: '100%',
         height: '100%',
         resizeMode: 'contain',
+    },
+    btnContainer: {
+        gap: h(8),
+        flexDirection: 'row',
     },
 });
 

@@ -23,7 +23,8 @@ const ItemWithIcon = ({ onPress, icon, name, color, setting }: Props) => {
                         icon={icon}
                         width={w(24)}
                         height={h(24)}
-                        fill={color ? Colors.error : Colors.white}></Icon>
+                        fill={color ? Colors.error : Colors.white}
+                    />
                 </View>
                 <View style={styles.name}>
                     <Text style={[styles.nameText, color && styles.red]}>
@@ -32,17 +33,7 @@ const ItemWithIcon = ({ onPress, icon, name, color, setting }: Props) => {
                 </View>
                 {setting === true ? (
                     <View style={styles.textContainer}>
-                        <Text
-                            style={[
-                                styles.text,
-                                {
-                                    color: app.uploadServiceEnabled
-                                        ? Colors.skyBlue
-                                        : Colors.metal,
-                                },
-                            ]}>
-                            {app.uploadServiceEnabled ? 'Enabled' : 'Disabled'}
-                        </Text>
+                        <Text style={[styles.text]} />
                     </View>
                 ) : (
                     <View style={styles.forwardIconContainer}>
@@ -71,7 +62,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     nameText: {
-        ...commonFonts.boldText,
+        ...commonFonts.regularText,
     },
     red: {
         color: Colors.error,
