@@ -78,6 +78,7 @@ function extractValueFromString(content, value) {
     const match = content.match(regex);
     return match ? match[1] : null;
 }
+
 const getSvgTags = svgContent => {
     const tagNames = new Set();
     svgContent.replace(
@@ -214,10 +215,10 @@ const insertFillOption = str => {
             return match.replace('>', textToInsert + '>');
         });
     } else {
-        newString = str
+        newString = str;
     }
 
-    newString.replace(`version="1.1"`, '');
+    newString.replace('version="1.1"', '');
     console.log('--------', newString);
     return newString;
 };

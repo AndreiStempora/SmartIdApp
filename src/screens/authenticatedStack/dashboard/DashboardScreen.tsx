@@ -7,8 +7,8 @@ import {
     RefreshControl,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
-    VirtualizedList,
 } from 'react-native';
 
 import { h, w } from '../../../common/styles/PixelPerfect.tsx';
@@ -27,6 +27,7 @@ import { Colors } from '../../../common/styles/constants.tsx';
 import { useSelector } from 'react-redux';
 import { getApp } from '../../../common/store/slices/appSlice.tsx';
 import { useIsFocused } from '@react-navigation/native';
+import Icon from '../../../common/components/icons/Icon.tsx';
 
 export type ItemContent = {
     title: string;
@@ -53,7 +54,7 @@ const DashboardScreen = ({ navigation }: any) => {
     const { postRequest } = useApiHeaders();
     const isFocused = useIsFocused();
     const app = useSelector(getApp);
-
+    const [grid, setGrid] = useState(false);
     const photoHandler = (res: ImagePickerResponse) => {
         if (res.didCancel) {
             console.log('User cancelled image picker');
@@ -150,6 +151,7 @@ const DashboardScreen = ({ navigation }: any) => {
                         />
                         <Text style={styles.btnText}>Library</Text>
                     </View>
+
                     <View style={styles.btn}>
                         <CustomIconButton
                             onPress={handleAddPhotoCamera}
@@ -160,12 +162,41 @@ const DashboardScreen = ({ navigation }: any) => {
                     </View>
                 </View>
             </CustomModal>
-
+            <View style={styles.controlsContainer}>
+                <TouchableOpacity
+                    style={styles.filtersBtnContainer}
+                    onPress={() => {}}>
+                    <View style={styles.gridBtnContainer}>
+                        <Icon icon={'boldFilters'} />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{}}
+                    onPress={() => {
+                        setGrid(!grid);
+                    }}>
+                    <View style={styles.gridBtnContainer}>
+                        {grid ? (
+                            <Icon icon={'boldList'} />
+                        ) : (
+                            <Icon icon={'boldGrid'} />
+                        )}
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{}} onPress={() => {}}>
+                    <View style={styles.gridBtnContainer}>
+                        <Icon icon={'boldSort'} />
+                    </View>
+                </TouchableOpacity>
+            </View>
             <FlatList
+                key={grid ? 'grid' : 'list'}
+                numColumns={grid ? 2 : 1}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
                 nestedScrollEnabled={true}
-                contentContainerStyle={{ paddingBottom: h(16) }}
+                style={{ marginBottom: h(16) }}
+                columnWrapperStyle={grid ? { gap: 8 } : null}
                 data={scans}
                 refreshControl={
                     <RefreshControl
@@ -177,7 +208,13 @@ const DashboardScreen = ({ navigation }: any) => {
                 }
                 //@ts-ignore
                 renderItem={({ item }: ItemContent) => {
-                    return <ScanItem item={item} navigation={navigation} />;
+                    return (
+                        <ScanItem
+                            item={item}
+                            navigation={navigation}
+                            grid={grid}
+                        />
+                    );
                 }}
                 keyExtractor={(item, index) => index.toString()}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -230,7 +267,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
     },
-
+    filtersBtnContainer: {
+        marginRight: 'auto',
+    },
     btn: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -238,6 +277,13 @@ const styles = StyleSheet.create({
     },
     btnText: {
         color: Colors.white,
+    },
+    controlsContainer: {
+        flexDirection: 'row',
+    },
+    gridBtnContainer: {
+        paddingHorizontal: w(15),
+        paddingVertical: h(15),
     },
 });
 

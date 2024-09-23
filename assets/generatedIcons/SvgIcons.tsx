@@ -3,6 +3,24 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import BackArrowNew from './BackArrowNew';
 import BackBtnIcon from './BackBtnIcon';
+import BoldBigWatch from './BoldBigWatch';
+import BoldCheckCircle from './BoldCheckCircle';
+import BoldCropRotate from './BoldCropRotate';
+import BoldFilters from './BoldFilters';
+import BoldGrid from './BoldGrid';
+import BoldList from './BoldList';
+import BoldLogin from './BoldLogin';
+import BoldNotVisible from './BoldNotVisible';
+import BoldRadioChecked from './BoldRadioChecked';
+import BoldRadioUnchecked from './BoldRadioUnchecked';
+import BoldRotateLeft from './BoldRotateLeft';
+import BoldSmallArrowDown from './BoldSmallArrowDown';
+import BoldSmallArrowLeft from './BoldSmallArrowLeft';
+import BoldSmallArrowRight from './BoldSmallArrowRight';
+import BoldSmallArrowUp from './BoldSmallArrowUp';
+import BoldSort from './BoldSort';
+import BoldTrash from './BoldTrash';
+import BoldVisible from './BoldVisible';
 import Camera from './Camera';
 import Checked from './Checked';
 import Close from './Close';
@@ -21,6 +39,7 @@ import Menu from './Menu';
 import Scan from './Scan';
 import Search from './Search';
 import Shuffle from './Shuffle';
+import TestAndrei from './TestAndrei';
 import Unchecked from './Unchecked';
 import Verified from './Verified';
 import VerifiedCheck from './VerifiedCheck';
@@ -28,7 +47,7 @@ import Warning from './Warning';
 import Watch from './Watch';
 
 type Props = {
-    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
+    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'BoldBigWatch' | 'BoldCheckCircle' | 'BoldCropRotate' | 'BoldFilters' | 'BoldGrid' | 'BoldList' | 'BoldLogin' | 'BoldNotVisible' | 'BoldRadioChecked' | 'BoldRadioUnchecked' | 'BoldRotateLeft' | 'BoldSmallArrowDown' | 'BoldSmallArrowLeft' | 'BoldSmallArrowRight' | 'BoldSmallArrowUp' | 'BoldSort' | 'BoldTrash' | 'BoldVisible' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'TestAndrei' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
     width?: number;
     height?: number;
     fill?: string;
@@ -70,6 +89,186 @@ const SvgIcons = ({ icon, width, height, stroke, fill }: Props) => {
          if (icon === 'BackBtnIcon') {
             return (
                 <BackBtnIcon
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldBigWatch') {
+            return (
+                <BoldBigWatch
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldCheckCircle') {
+            return (
+                <BoldCheckCircle
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldCropRotate') {
+            return (
+                <BoldCropRotate
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldFilters') {
+            return (
+                <BoldFilters
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldGrid') {
+            return (
+                <BoldGrid
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldList') {
+            return (
+                <BoldList
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldLogin') {
+            return (
+                <BoldLogin
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldNotVisible') {
+            return (
+                <BoldNotVisible
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldRadioChecked') {
+            return (
+                <BoldRadioChecked
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldRadioUnchecked') {
+            return (
+                <BoldRadioUnchecked
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldRotateLeft') {
+            return (
+                <BoldRotateLeft
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldSmallArrowDown') {
+            return (
+                <BoldSmallArrowDown
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldSmallArrowLeft') {
+            return (
+                <BoldSmallArrowLeft
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldSmallArrowRight') {
+            return (
+                <BoldSmallArrowRight
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldSmallArrowUp') {
+            return (
+                <BoldSmallArrowUp
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldSort') {
+            return (
+                <BoldSort
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldTrash') {
+            return (
+                <BoldTrash
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldVisible') {
+            return (
+                <BoldVisible
                     width={width}
                     height={height}
                     stroke={stroke}
@@ -250,6 +449,16 @@ const SvgIcons = ({ icon, width, height, stroke, fill }: Props) => {
          if (icon === 'Shuffle') {
             return (
                 <Shuffle
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'TestAndrei') {
+            return (
+                <TestAndrei
                     width={width}
                     height={height}
                     stroke={stroke}

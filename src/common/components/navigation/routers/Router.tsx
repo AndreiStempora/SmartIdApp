@@ -23,8 +23,8 @@ const Router = () => {
             const app = await getItemFromStorage('app');
             const str = bundleId.split('.').slice(-1).pop();
             app.domain =
-                // 'https://v2.smartid.stempora.me/api/smartid-ai/' + str + '/';
-                'https://smartid.stempora.com/api/smartid-ai/' + str + '/';
+                'https://v2.smartid.stempora.me/api/smartid-ai/' + str + '/';
+            // 'https://smartid.stempora.com/api/smartid-ai/' + str + '/';
             const translation = await getItemFromStorage('translation');
             dispatch(updateAppInfo(app));
             dispatch(updateTranslation(translation));

@@ -87,6 +87,8 @@ const LoginScreen = ({ navigation }: any) => {
                         onPress={handleForm}
                         text={'submit'}
                         stretch={false}
+                        iconRight={true}
+                        icon={'boldLogin'}
                     />
                 </View>
                 <View style={styles.versionContainer}>

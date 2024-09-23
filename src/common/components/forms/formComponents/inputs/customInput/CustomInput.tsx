@@ -120,16 +120,16 @@ const CustomInput = ({
                             style={{ flexGrow: 1 }}
                             onPress={() => setShowPassword(!showPassword)}>
                             <View style={styles.iconPadding}>
-                                {/*<Icon*/}
-                                {/*    icon={*/}
-                                {/*        showPassword*/}
-                                {/*            ? 'visibilityOn'*/}
-                                {/*            : 'visibilityOff'*/}
-                                {/*    }*/}
-                                {/*    fill={Colors.metal}*/}
-                                {/*    width={w(24)}*/}
-                                {/*    height={h(24)}*/}
-                                {/*/>*/}
+                                <Icon
+                                    icon={
+                                        showPassword
+                                            ? 'boldNotVisible'
+                                            : 'boldVisible'
+                                    }
+                                    fill={Colors.metal}
+                                    width={w(24)}
+                                    height={h(24)}
+                                />
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -219,9 +219,11 @@ const styles = StyleSheet.create({
         // paddingHorizontal: w(12),
         // width: w(56),
         // height: h(56),
+        // backgroundColor: 'blue',
+
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: h(4),
+        paddingVertical: h(14),
         zIndex: 20,
     },
     iconContainer: {
@@ -236,6 +238,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         height: h(56),
+        width: w(56),
         // backgroundColor: 'red',
     },
 });

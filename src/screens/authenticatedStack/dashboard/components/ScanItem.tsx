@@ -8,8 +8,9 @@ import Icon from '../../../../common/components/icons/Icon.tsx';
 type Props = {
     item: ItemContent;
     navigation: any;
+    grid?: boolean;
 };
-const ScanItem = ({ item, navigation }: Props) => {
+const ScanItem = ({ item, navigation, grid }: Props) => {
     const [color, setColor] = useState(Colors.white);
     const getOpacityColor = (color: string, opacity: number) => {
         return color + Math.round(opacity * 255).toString(16);
@@ -41,17 +42,31 @@ const ScanItem = ({ item, navigation }: Props) => {
     return (
         <TouchableOpacity
             onPress={handleSeeDetails}
-            style={styles.mainContainer}>
-            <View style={styles.imageContainer}>
-                <Image style={styles.img} source={{ uri: item.tn }} />
+            style={grid ? styles.mainContainerGrid : styles.mainContainer}>
+            <View
+                style={
+                    grid ? styles.imageContainerGrid : styles.imageContainer
+                }>
+                <Image
+                    style={grid ? styles.imgGrid : styles.img}
+                    source={{ uri: item.tn }}
+                />
             </View>
-            <View style={styles.contentContainer}>
+            <View
+                style={
+                    grid ? styles.contentContainerGrid : styles.contentContainer
+                }>
                 <View style={styles.titleContainer}>
                     <Text numberOfLines={2} style={styles.title}>
                         {item.title} {item.subtitle}
                     </Text>
                 </View>
-                <View style={styles.descriptionContainer}>
+                <View
+                    style={
+                        grid
+                            ? styles.descriptionContainerGrid
+                            : styles.descriptionContainer
+                    }>
                     <View style={styles.group}>
                         {item.fakeResult !== null && (
                             <View
@@ -67,8 +82,8 @@ const ScanItem = ({ item, navigation }: Props) => {
                                 ]}>
                                 <Icon
                                     icon={'verified'}
-                                    width={w(10)}
-                                    height={h(10)}
+                                    width={w(12)}
+                                    height={h(12)}
                                     fill={color}
                                     stroke={color}
                                 />
@@ -89,17 +104,15 @@ const ScanItem = ({ item, navigation }: Props) => {
 
 const styles = StyleSheet.create({
     iconBackground: {
-        width: w(12),
-        height: w(12),
-        borderRadius: 12,
+        width: w(14),
+        height: w(14),
+        borderRadius: 14,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 0.5,
+        // borderWidth: 0.5,
         // backgroundColor: Colors.white,
     },
     group: {
-        // height: h(12),
-        // backgroundColor: 'red',
         flexDirection: 'row',
         gap: w(8),
         alignItems: 'center',
@@ -111,24 +124,51 @@ const styles = StyleSheet.create({
         borderColor: Colors.black400,
         backgroundColor: Colors.black300,
         borderRadius: 4,
-        paddingHorizontal: w(16),
-        paddingVertical: h(12),
         flexDirection: 'row',
         alignItems: 'center',
         gap: w(16),
     },
+    mainContainerGrid: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: Colors.black400,
+        borderRadius: 4,
+    },
     imageContainer: {
-        width: w(48),
-        height: h(48),
+        paddingHorizontal: w(16),
+        paddingVertical: h(16),
+        borderRightWidth: w(1),
+        borderRightColor: Colors.black400,
+    },
+    imageContainerGrid: {
+        paddingHorizontal: w(16),
+        paddingVertical: h(16),
+        borderBottomWidth: w(1),
+        borderBottomColor: Colors.black400,
     },
     img: {
-        width: '100%',
-        height: '100%',
+        width: w(48),
+        height: h(48),
         resizeMode: 'cover',
+        borderRadius: w(2),
+    },
+    imgGrid: {
+        // width: w(136),
+        // height: h(136),
+        width: '100%',
+        aspectRatio: 1,
+        resizeMode: 'cover',
+        borderRadius: w(2),
     },
     contentContainer: {
         gap: h(8),
         flex: 1,
+        paddingRight: w(16),
+    },
+    contentContainerGrid: {
+        paddingHorizontal: w(16),
+        paddingVertical: h(16),
+        gap: h(8),
     },
     titleContainer: {
         // backgroundColor: 'red',
@@ -139,6 +179,11 @@ const styles = StyleSheet.create({
         gap: w(24),
         justifyContent: 'space-between',
     },
+    descriptionContainerGrid: {
+        // flexDirection: 'row',
+        gap: h(8),
+        // justifyContent: 'space-between',
+    },
     title: {
         ...commonFonts.boldText,
         fontSize: f(14),
@@ -148,7 +193,6 @@ const styles = StyleSheet.create({
     },
     description: {
         ...commonFonts.regularText,
-
         color: Colors.grey100,
         fontSize: f(12),
         lineHeight: h(14.4),

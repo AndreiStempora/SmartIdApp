@@ -1,5 +1,5 @@
-import { convertX, convertY, scaleFont } from 'react-native-responsive-pixels';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { convertX, convertY } from 'react-native-responsive-pixels';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { Platform } from 'react-native';
 
 export const w = (nr: number, WIDTH = 380) => {
