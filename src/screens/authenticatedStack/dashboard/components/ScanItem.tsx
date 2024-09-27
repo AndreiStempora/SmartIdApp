@@ -4,6 +4,9 @@ import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import { ItemContent } from '../DashboardScreen.tsx';
 import { useEffect, useState } from 'react';
 import Icon from '../../../../common/components/icons/Icon.tsx';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../common/store/store.tsx';
+import { updateSelectedItem } from '../../../../common/store/slices/selectedItemSlice.tsx';
 
 type Props = {
     item: ItemContent;
@@ -15,6 +18,7 @@ const ScanItem = ({ item, navigation, grid }: Props) => {
     const getOpacityColor = (color: string, opacity: number) => {
         return color + Math.round(opacity * 255).toString(16);
     };
+    const dispatch = useDispatch<AppDispatch>();
     const formatDate = (ms: string) => {
         const date = new Date(Number(ms));
         const day = String(date.getDate()).padStart(2, '0');
@@ -37,7 +41,9 @@ const ScanItem = ({ item, navigation, grid }: Props) => {
     }, []);
 
     const handleSeeDetails = () => {
+        dispatch(updateSelectedItem(item));
         navigation.navigate('Matches', { ...item });
+        // navigation.navigate('Matches');
     };
     return (
         <TouchableOpacity

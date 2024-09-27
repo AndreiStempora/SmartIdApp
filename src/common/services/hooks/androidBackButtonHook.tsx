@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BackHandler, BackHandlerStatic } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-const useAndroidBackButton = () => {
+const useAndroidBackButton = (func: Function) => {
     const isFocused = useIsFocused();
+
     const handleBackButton = () => {
         console.log('back button pressed');
+        func && func();
         return true;
     };
     useEffect(() => {
@@ -29,7 +31,7 @@ const useAndroidBackButton = () => {
         };
     }, [isFocused]);
 
-    return null;
+    return;
 };
 
 export default useAndroidBackButton;

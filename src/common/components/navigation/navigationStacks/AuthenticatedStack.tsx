@@ -11,6 +11,9 @@ import ProfileScreen from '../../../../screens/authenticatedStack/profile/Profil
 import DetailsScreen from '../../../../screens/authenticatedStack/details/DetailsScreen.tsx';
 import AnalyzingAuthenticityScreen from '../../../../screens/authenticatedStack/analyzingAuthenticity/AnalyzingAuthenticity.tsx';
 import FakeScreen from '../../../../screens/authenticatedStack/fake/FakeScreen.tsx';
+import CameraScreen from '../../../../screens/authenticatedStack/camera/CameraScreen.tsx';
+import InitialImageUploadScreen from '../../../../screens/authenticatedStack/initialImageUpload/InitialImageUploadScreen.tsx';
+import FullUploadScreen from '../../../../screens/authenticatedStack/fullUpload/FullUploadScreen.tsx';
 const Stack = createStackNavigator();
 
 const AuthenticatedStack = () => {
@@ -37,6 +40,12 @@ const AuthenticatedStack = () => {
             <Stack.Screen name={'Profile'} component={ProfileScreen} />
             <Stack.Screen name={'Details'} component={DetailsScreen} />
             <Stack.Screen name={'Fake'} component={FakeScreen} />
+            <Stack.Screen name={'Camera'} component={CameraScreen} />
+            <Stack.Screen name={'FullUpload'} component={FullUploadScreen} />
+            <Stack.Screen
+                name={'InitialUpload'}
+                component={InitialImageUploadScreen}
+            />
         </Stack.Navigator>
     );
 };

@@ -13,6 +13,7 @@ import BoldLogin from './BoldLogin';
 import BoldNotVisible from './BoldNotVisible';
 import BoldRadioChecked from './BoldRadioChecked';
 import BoldRadioUnchecked from './BoldRadioUnchecked';
+import BoldRetry from './BoldRetry';
 import BoldRotateLeft from './BoldRotateLeft';
 import BoldSmallArrowDown from './BoldSmallArrowDown';
 import BoldSmallArrowLeft from './BoldSmallArrowLeft';
@@ -47,7 +48,7 @@ import Warning from './Warning';
 import Watch from './Watch';
 
 type Props = {
-    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'BoldBigWatch' | 'BoldCheckCircle' | 'BoldCropRotate' | 'BoldFilters' | 'BoldGrid' | 'BoldList' | 'BoldLogin' | 'BoldNotVisible' | 'BoldRadioChecked' | 'BoldRadioUnchecked' | 'BoldRotateLeft' | 'BoldSmallArrowDown' | 'BoldSmallArrowLeft' | 'BoldSmallArrowRight' | 'BoldSmallArrowUp' | 'BoldSort' | 'BoldTrash' | 'BoldVisible' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'TestAndrei' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
+    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'BoldBigWatch' | 'BoldCheckCircle' | 'BoldCropRotate' | 'BoldFilters' | 'BoldGrid' | 'BoldList' | 'BoldLogin' | 'BoldNotVisible' | 'BoldRadioChecked' | 'BoldRadioUnchecked' | 'BoldRetry' | 'BoldRotateLeft' | 'BoldSmallArrowDown' | 'BoldSmallArrowLeft' | 'BoldSmallArrowRight' | 'BoldSmallArrowUp' | 'BoldSort' | 'BoldTrash' | 'BoldVisible' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'TestAndrei' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
     width?: number;
     height?: number;
     fill?: string;
@@ -189,6 +190,16 @@ const SvgIcons = ({ icon, width, height, stroke, fill }: Props) => {
          if (icon === 'BoldRadioUnchecked') {
             return (
                 <BoldRadioUnchecked
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldRetry') {
+            return (
+                <BoldRetry
                     width={width}
                     height={height}
                     stroke={stroke}

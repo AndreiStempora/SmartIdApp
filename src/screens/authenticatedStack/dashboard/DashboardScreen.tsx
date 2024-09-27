@@ -137,31 +137,31 @@ const DashboardScreen = ({ navigation }: any) => {
                     leftSide={<UserIcon nav={navigation} />}
                 />
             }>
-            <CustomModal
-                isVisible={isVisible}
-                buttons={[
-                    { title: 'cancel', onPress: () => setIsVisible(false) },
-                ]}>
-                <View style={styles.btnContainer}>
-                    <View style={styles.btn}>
-                        <CustomIconButton
-                            onPress={handleAddPhoto}
-                            icon={'gallery'}
-                            background={'transparent'}
-                        />
-                        <Text style={styles.btnText}>Library</Text>
-                    </View>
+            {/*<CustomModal*/}
+            {/*    isVisible={isVisible}*/}
+            {/*    buttons={[*/}
+            {/*        { title: 'cancel', onPress: () => setIsVisible(false) },*/}
+            {/*    ]}>*/}
+            {/*    <View style={styles.btnContainer}>*/}
+            {/*        <View style={styles.btn}>*/}
+            {/*            <CustomIconButton*/}
+            {/*                onPress={handleAddPhoto}*/}
+            {/*                icon={'gallery'}*/}
+            {/*                background={'transparent'}*/}
+            {/*            />*/}
+            {/*            <Text style={styles.btnText}>Library</Text>*/}
+            {/*        </View>*/}
 
-                    <View style={styles.btn}>
-                        <CustomIconButton
-                            onPress={handleAddPhotoCamera}
-                            icon={'camera'}
-                            background={'transparent'}
-                        />
-                        <Text style={styles.btnText}>Camera</Text>
-                    </View>
-                </View>
-            </CustomModal>
+            {/*        <View style={styles.btn}>*/}
+            {/*            <CustomIconButton*/}
+            {/*                onPress={handleAddPhotoCamera}*/}
+            {/*                icon={'camera'}*/}
+            {/*                background={'transparent'}*/}
+            {/*            />*/}
+            {/*            <Text style={styles.btnText}>Camera</Text>*/}
+            {/*        </View>*/}
+            {/*    </View>*/}
+            {/*</CustomModal>*/}
             <View style={styles.controlsContainer}>
                 <TouchableOpacity
                     style={styles.filtersBtnContainer}
@@ -240,7 +240,7 @@ const DashboardScreen = ({ navigation }: any) => {
                     right: w(0),
                 }}>
                 <CustomIconButton
-                    onPress={() => setIsVisible(true)}
+                    onPress={() => navigation.navigate('Camera')}
                     icon={'scan'}
                 />
             </View>

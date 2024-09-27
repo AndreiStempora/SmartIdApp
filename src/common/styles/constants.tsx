@@ -25,6 +25,7 @@ const Colors = {
     black100: '#121212',
     black300: '#262626',
     black400: '#363636',
+    black500: '#464646',
     yellow100: '#D19D36',
 };
 

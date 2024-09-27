@@ -4,65 +4,72 @@ import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import CustomTextButton from '../../../../common/components/buttons/buttonText/CustomTextButton.tsx';
 import ConfidenceContainer from '../../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
 import CustomImageComponent from '../../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
+import { match } from '../../../../common/store/slices/photoSlice.tsx';
+import { useState } from 'react';
+import CustomModal from '../../../../common/components/modals/customModal.tsx';
 
-export type MatchItem = {
-    brand: string;
-    confidence: number;
-    model: string;
-    details: {}[];
-    images: string[];
-    reference: string;
-    code?: string;
-    position: number;
-    selectedPos: boolean;
-};
 type Props = {
-    item: MatchItem;
+    item: match;
     navigation: any;
     code: string;
-    changeSelectedPos: (confidence: number) => void;
-    fakeResult?: null | string;
+    // changeSelectedPos: (confidence: number) => void;
+    // fakeResult?: null | string;
 };
 const MatchesItem = ({
     navigation,
     item,
     code,
-    changeSelectedPos,
-    fakeResult,
-}: Props) => {
-    const handleSeeDetails = () => {
-        console.log('See details', item, code, fakeResult);
-        navigation.navigate('Details', {
-            ...item,
-            code: code,
-            fakeResult: fakeResult,
-        });
+}: // changeSelectedPos,
+// fakeResult,
+Props) => {
+    const [showModal, setShowModal] = useState(false);
+    const handleSelectMatch = () => {
+        setShowModal(true);
+    };
+
+    const handleModalYes = () => {
+        console.log('yes', item, code);
+        setShowModal(false);
     };
     return (
         <View style={styles.itemContainer}>
+            <CustomModal
+                isVisible={showModal}
+                buttons={[
+                    {
+                        title: 'Cancel',
+                        onPress: () => {
+                            setShowModal(false);
+                        },
+                    },
+                    {
+                        title: 'yes',
+                        onPress: () => {
+                            handleModalYes();
+                        },
+                    },
+                ]}>
+                <Text style={styles.modalText}>
+                    Are you sure this is the correct match?
+                </Text>
+            </CustomModal>
             <View style={styles.imageContainer}>
                 <CustomImageComponent
                     image={item.images[0]}
                     btnPosition={{ top: h(2), right: 2 }}
                     resizeMode={'contain'}
                 />
-                <ConfidenceContainer
-                    confidence={item.confidence}
-                    selectedPos={item.selectedPos}
-                    changeSelectedPos={() => {
-                        changeSelectedPos(item.position);
-                    }}
-                />
+                <ConfidenceContainer confidence={item.confidence} />
             </View>
 
-            <Text style={styles.title}>{item.brand}</Text>
+            <Text style={styles.title}>{item.title}</Text>
             <View style={styles.descriptionContainer}>
-                <Text style={styles.description}>{item.model}</Text>
+                <Text style={styles.description}>{item.subtitle}</Text>
                 <Text style={styles.description}>{item.reference}</Text>
             </View>
             <CustomTextButton
-                onPress={handleSeeDetails}
-                text={'See Details'}
+                onPress={handleSelectMatch}
+                text={'Match this'}
                 background={Colors.black300}
                 border={Colors.black400}
             />
@@ -122,6 +129,11 @@ const styles = StyleSheet.create({
     },
     confidenceLow: {
         color: Colors.yellow100,
+    },
+    modalText: {
+        ...commonFonts.regularText,
+        color: Colors.white,
+        textAlign: 'center',
     },
 });
 export default MatchesItem;

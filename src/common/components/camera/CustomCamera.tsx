@@ -38,7 +38,7 @@ const CustomCamera = ({ photo, cam, wideScreen, ultraWideExists }: Props) => {
     useEffect(() => {
         (async () => {
             if (device) {
-                console.log('device', device);
+                console.log('device', device, hasPermission, 'wtf');
                 if (!hasPermission) {
                     await requestPermission().then(permission => {
                         if (permission) {
@@ -59,7 +59,9 @@ const CustomCamera = ({ photo, cam, wideScreen, ultraWideExists }: Props) => {
         console.log('wideScreen cam', wideScreen, ultraWideDevice.length > 0);
     }, [wideScreen]);
 
-    if (!device) return null;
+    if (!device) {
+        return null;
+    }
 
     return (
         <>

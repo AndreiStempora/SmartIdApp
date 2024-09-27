@@ -95,6 +95,7 @@ const useBlob = () => {
     };
 
     const tryUpload = async (
+        urlEnd: string,
         file: any,
         counter: number,
         options: any
@@ -107,13 +108,17 @@ const useBlob = () => {
             // formData.append('token', token);
 
             console.log(formData, 'formData');
-            const response = await axios.post(BASE_URL + 'upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    smartId: token,
-                },
-                ...options,
-            });
+            const response = await axios.post(
+                BASE_URL + urlEnd.slice(1),
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        smartId: token,
+                    },
+                    ...options,
+                }
+            );
             console.log(response, 'response.UPLOAD');
             return response.data;
         } catch (error) {
@@ -122,7 +127,7 @@ const useBlob = () => {
                 console.log('Operation canceled', error);
             } else {
                 if (counter < 3) {
-                    return tryUpload(file, counter + 1, options);
+                    return tryUpload(urlEnd, file, counter + 1, options);
                 } else {
                     console.log('upload error', error);
                 }
@@ -130,10 +135,14 @@ const useBlob = () => {
         }
     };
 
-    const upload = async (file: PictureUpload, options = {}) => {
+    const upload = async (
+        urlEnd: string,
+        file: PictureUpload,
+        options = {}
+    ) => {
         let tries = 2;
         console.log('test upload', options);
-        return await tryUpload(file, tries, options);
+        return await tryUpload(urlEnd, file, tries, options);
     };
 
     const downloadPics = async (

@@ -6,7 +6,7 @@ import { Colors, commonFonts } from '../../../common/styles/constants.tsx';
 import { useRoute } from '@react-navigation/native';
 import IdHeader from '../../../common/components/screenComponents/bars/headers/IdHeader.tsx';
 
-import { MatchItem } from '../matches/components/MatchesItem.tsx';
+// import { MatchItem } from '../matches/components/MatchesItem.tsx';
 import ConfidenceContainer from '../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
 import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
 import DetailsList from './components/DetailsList.tsx';
@@ -14,17 +14,17 @@ import ImageCarousel from './components/ImageCarousel.tsx';
 import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
 import CustomModal from '../../../common/components/modals/customModal.tsx';
 import CustomImageComponent from '../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
-import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
+// import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
 import HiddenButton from './components/HiddenButton.tsx';
 
 const DetailsScreen = ({ navigation }: any) => {
-    useAndroidBackButton();
+    // useAndroidBackButton();
     const router = useRoute();
     const { postRequest } = useApiHeaders();
     const [isVisible, setIsVisible] = useState(false);
     // const [isVisibleNew, setIsVisibleNew] = useState(false);
     const [error, setError] = useState(false);
-    const [item, setItem] = useState<MatchItem>({
+    const [item, setItem] = useState({
         brand: '',
         confidence: 0,
         model: '',
@@ -49,9 +49,7 @@ const DetailsScreen = ({ navigation }: any) => {
             setIsVisible(true);
         }
     };
-    useEffect(() => {
-        setItem(router.params as MatchItem);
-    }, []);
+    useEffect(() => {}, []);
 
     const handleAuthenticity = () => {
         navigation.navigate('Authenticity', { ...item });
@@ -92,7 +90,7 @@ const DetailsScreen = ({ navigation }: any) => {
                 )}
                 <ConfidenceContainer
                     confidence={item.confidence}
-                    selectedPos={item.selectedPos}
+                    // selectedPos={item.selectedPos}
                     cssPosition={{ bottom: h(16), right: w(16) }}
                 />
             </View>

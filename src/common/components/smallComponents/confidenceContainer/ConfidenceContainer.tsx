@@ -5,30 +5,25 @@ import Icon from '../../icons/Icon.tsx';
 
 type Props = {
     confidence: number;
-    selectedPos: boolean;
-    changeSelectedPos?: () => void;
+
     cssPosition?: { bottom: number; right: number };
 };
 const ConfidenceContainer = ({
     confidence,
-    selectedPos,
-    changeSelectedPos,
+
     cssPosition,
 }: Props) => {
     return (
         <TouchableOpacity
             style={[styles.mainContainer, cssPosition]}
-            onPress={() => {
-                changeSelectedPos && changeSelectedPos();
-            }}
-            disabled={selectedPos}>
+            onPress={() => {}}>
             <View style={styles.confidenceContainer}>
-                <Icon
-                    icon={selectedPos ? 'checked' : 'unchecked'}
-                    width={w(24)}
-                    height={24}
-                    fill={confidence < 70 ? Colors.yellow100 : Colors.lime}
-                />
+                {/*<Icon*/}
+                {/*    icon={selectedPos ? 'checked' : 'unchecked'}*/}
+                {/*    width={w(24)}*/}
+                {/*    height={24}*/}
+                {/*    fill={confidence < 70 ? Colors.yellow100 : Colors.lime}*/}
+                {/*/>*/}
                 <Text
                     style={[
                         styles.confidenceText,
