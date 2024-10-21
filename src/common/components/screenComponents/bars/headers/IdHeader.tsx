@@ -8,24 +8,32 @@ type Props = {
     navigation: any;
     title?: string;
     navigate?: () => void;
+    backFalse?: boolean;
 };
 
-const IdHeader = ({ navigation, title, navigate }: Props) => {
+const IdHeader = ({ navigation, title, navigate, backFalse }: Props) => {
     return (
         <View style={styles.headerContainer}>
-            <TouchableOpacity
-                style={styles.backBtnContainer}
-                onPress={() => {
-                    if (navigate) {
-                        navigate();
-                        return;
-                    }
-                    navigation.goBack();
-                }}>
-                <View style={styles.backBtn}>
-                    <Icon icon={'backArrowNew'} height={h(24)} width={w(24)} />
-                </View>
-            </TouchableOpacity>
+            {!backFalse && (
+                <TouchableOpacity
+                    style={styles.backBtnContainer}
+                    onPress={() => {
+                        if (navigate) {
+                            navigate();
+                            return;
+                        }
+                        navigation.goBack();
+                    }}>
+                    <View style={styles.backBtn}>
+                        <Icon
+                            icon={'backArrowNew'}
+                            height={h(24)}
+                            width={w(24)}
+                        />
+                    </View>
+                </TouchableOpacity>
+            )}
+
             {title && (
                 <Text numberOfLines={1} style={styles.pageTitle}>
                     {title}

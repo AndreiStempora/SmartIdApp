@@ -1,29 +1,126 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { h, w } from '../../../../common/styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import Icon from '../../../../common/components/icons/Icon.tsx';
 import boldBigWatch from '../../../../../assets/generatedIcons/BoldBigWatch.tsx';
+import { useEffect, useState } from 'react';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import {
+    updateSlotsData,
+    updateTakenPicturesData,
+} from '../../../../common/store/slices/photoSlice.tsx';
+import { AppDispatch } from '../../../../common/store/store.tsx';
+import { useDispatch } from 'react-redux';
 
-const UploadItem = () => {
+type Props = {
+    slot: string;
+    name: string;
+    required: boolean;
+    editable: boolean;
+    mask: string[];
+    src?: string;
+    navigation: any;
+};
+const UploadItem = ({
+    slot,
+    name,
+    required,
+    editable,
+    mask,
+    src,
+    navigation,
+}: Props) => {
+    const [selected, setSelected] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleTakePhoto = () => {
+        navigation.navigate('Camera2', { slot: slot });
+    };
+    const handleCrop = () => {
+        ImageCropPicker.openCropper({
+            //@ts-ignore
+            path: src,
+        }).then(croppedImage => {
+            console.log(croppedImage, 'cropped image');
+            dispatch(
+                updateSlotsData({
+                    //@ts-ignore
+                    slot: router.params?.slot,
+                    src: src,
+                })
+            );
+        });
+    };
+
+    useEffect(() => {
+        console.log(
+            'UploadItem mounted',
+            slot,
+            name,
+            required,
+            editable,
+            mask,
+            src
+        );
+    }, []);
     return (
         <View style={styles.mainContainer}>
             <View style={styles.imageContainer}>
-                <Icon
-                    icon={'boldBigWatch'}
-                    width={w(40)}
-                    height={h(40)}
-                    fill={Colors.black500}
-                />
+                {src?.length ? (
+                    <Image
+                        source={{ uri: src }}
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                ) : (
+                    <Icon
+                        icon={'boldBigWatch'}
+                        width={w(40)}
+                        height={h(40)}
+                        fill={Colors.black500}
+                    />
+                )}
             </View>
             <View style={styles.titleContainer}>
                 <Text numberOfLines={1} style={styles.title}>
-                    boldBigWatch from '../../../../../assets/ge ne ra
-                    tedIcons/BoldBigWatch.tsx
+                    {name}
                 </Text>
             </View>
-            <TouchableOpacity style={styles.localButtonContainer}>
-                <Icon icon={'camera'} width={w(24)} height={h(24)} />
-            </TouchableOpacity>
+            {editable && (
+                <View>
+                    {src?.length ? (
+                        <View style={styles.buttonsContainer}>
+                            <TouchableOpacity
+                                style={styles.halfButton}
+                                onPress={handleTakePhoto}>
+                                <Icon
+                                    icon={'boldRetry'}
+                                    width={w(24)}
+                                    height={h(24)}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.halfButton}
+                                onPress={handleCrop}>
+                                <Icon
+                                    icon={'boldCropRotate'}
+                                    width={w(24)}
+                                    height={h(24)}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.localButtonContainer}
+                            onPress={handleTakePhoto}>
+                            <Icon
+                                icon={'camera'}
+                                width={w(24)}
+                                height={h(24)}
+                            />
+                        </TouchableOpacity>
+                    )}
+                </View>
+            )}
         </View>
     );
 };
@@ -67,6 +164,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: h(56),
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        gap: w(8),
+    },
+    halfButton: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.black300,
+        paddingVertical: h(15),
+        borderWidth: w(1),
+        borderRadius: w(4),
+        borderColor: Colors.black400,
     },
 });
 

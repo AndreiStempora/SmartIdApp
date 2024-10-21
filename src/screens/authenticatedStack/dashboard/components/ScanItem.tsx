@@ -28,22 +28,25 @@ const ScanItem = ({ item, navigation, grid }: Props) => {
         return `${day}/${month}/${year}`;
     };
 
-    useEffect(() => {
-        if (item.fakeResult === '1') {
-            setColor(Colors.error);
-        }
-        if (item.fakeResult === '2') {
-            setColor(Colors.yellow100);
-        }
-        if (item.fakeResult === '3') {
-            setColor(Colors.lime);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (item.fakeResult === '1') {
+    //         setColor(Colors.error);
+    //     }
+    //     if (item.fakeResult === '2') {
+    //         setColor(Colors.yellow100);
+    //     }
+    //     if (item.fakeResult === '3') {
+    //         setColor(Colors.lime);
+    //     }
+    //     console.log(item, 'ooooooooooo');
+    // }, []);
 
     const handleSeeDetails = () => {
         dispatch(updateSelectedItem(item));
-        navigation.navigate('Matches', { ...item });
-        // navigation.navigate('Matches');
+        console.log('item', item);
+        // navigation.navigate('Matches', { ...item });
+        // navigation.navigate('Placeholder');
+        // navigation.navigate('Details');
     };
     return (
         <TouchableOpacity

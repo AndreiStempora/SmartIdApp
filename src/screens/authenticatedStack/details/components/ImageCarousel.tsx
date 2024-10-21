@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useRef } from 'react';
 import { h, w } from '../../../../common/styles/PixelPerfect';
 import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
-import CustomImageComponent from '../../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
+import CustomImageComponent from './CustomImageComponent.tsx';
 
 type Props = {
     images: string[];

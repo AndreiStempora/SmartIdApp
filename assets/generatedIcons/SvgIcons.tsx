@@ -19,9 +19,11 @@ import BoldSmallArrowDown from './BoldSmallArrowDown';
 import BoldSmallArrowLeft from './BoldSmallArrowLeft';
 import BoldSmallArrowRight from './BoldSmallArrowRight';
 import BoldSmallArrowUp from './BoldSmallArrowUp';
+import BoldSmallCheck from './BoldSmallCheck';
 import BoldSort from './BoldSort';
 import BoldTrash from './BoldTrash';
 import BoldVisible from './BoldVisible';
+import BoldWarning from './BoldWarning';
 import Camera from './Camera';
 import Checked from './Checked';
 import Close from './Close';
@@ -48,7 +50,7 @@ import Warning from './Warning';
 import Watch from './Watch';
 
 type Props = {
-    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'BoldBigWatch' | 'BoldCheckCircle' | 'BoldCropRotate' | 'BoldFilters' | 'BoldGrid' | 'BoldList' | 'BoldLogin' | 'BoldNotVisible' | 'BoldRadioChecked' | 'BoldRadioUnchecked' | 'BoldRetry' | 'BoldRotateLeft' | 'BoldSmallArrowDown' | 'BoldSmallArrowLeft' | 'BoldSmallArrowRight' | 'BoldSmallArrowUp' | 'BoldSort' | 'BoldTrash' | 'BoldVisible' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'TestAndrei' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
+    icon: 'ArrowLeft' | 'ArrowRight' | 'BackArrowNew' | 'BackBtnIcon' | 'BoldBigWatch' | 'BoldCheckCircle' | 'BoldCropRotate' | 'BoldFilters' | 'BoldGrid' | 'BoldList' | 'BoldLogin' | 'BoldNotVisible' | 'BoldRadioChecked' | 'BoldRadioUnchecked' | 'BoldRetry' | 'BoldRotateLeft' | 'BoldSmallArrowDown' | 'BoldSmallArrowLeft' | 'BoldSmallArrowRight' | 'BoldSmallArrowUp' | 'BoldSmallCheck' | 'BoldSort' | 'BoldTrash' | 'BoldVisible' | 'BoldWarning' | 'Camera' | 'Checked' | 'Close' | 'DataCompleted' | 'DataFail' | 'DataHigh' | 'DataLoader' | 'DataLow' | 'DataMed' | 'DataSafe' | 'Fullscreen' | 'Gallery' | 'GuardEmblem' | 'LogOut' | 'Menu' | 'Scan' | 'Search' | 'Shuffle' | 'TestAndrei' | 'Unchecked' | 'Verified' | 'VerifiedCheck' | 'Warning' | 'Watch' | string ;
     width?: number;
     height?: number;
     fill?: string;
@@ -257,6 +259,16 @@ const SvgIcons = ({ icon, width, height, stroke, fill }: Props) => {
                 />
             )
         }
+         if (icon === 'BoldSmallCheck') {
+            return (
+                <BoldSmallCheck
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
          if (icon === 'BoldSort') {
             return (
                 <BoldSort
@@ -280,6 +292,16 @@ const SvgIcons = ({ icon, width, height, stroke, fill }: Props) => {
          if (icon === 'BoldVisible') {
             return (
                 <BoldVisible
+                    width={width}
+                    height={height}
+                    stroke={stroke}
+                    fill={fill}
+                />
+            )
+        }
+         if (icon === 'BoldWarning') {
+            return (
+                <BoldWarning
                     width={width}
                     height={height}
                     stroke={stroke}

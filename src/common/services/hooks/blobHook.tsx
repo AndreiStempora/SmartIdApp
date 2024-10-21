@@ -15,6 +15,8 @@ type PictureUpload = {
         type: string;
         name: string;
     };
+    code?: string;
+    slot?: string;
 };
 
 const useBlob = () => {

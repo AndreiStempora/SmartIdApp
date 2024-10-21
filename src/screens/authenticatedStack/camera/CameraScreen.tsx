@@ -1,5 +1,5 @@
-import { StyleSheet, View, Dimensions, Image } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import React, { useRef, useState } from 'react';
 import ScreenContainer from '../../../common/components/screenComponents/containers/ScreenContainer.tsx';
 import CustomCamera from '../../../common/components/camera/CustomCamera.tsx';
 import { h, w } from '../../../common/styles/PixelPerfect.tsx';
@@ -18,29 +18,33 @@ const CameraScreen = ({ navigation }: any) => {
     const [img, setImg] = useState({});
 
     const handleGalleryImage = async () => {
-        ImagePicker.openPicker({
-            mediaType: 'photo',
-            width: 300,
-            height: 300,
-            cropping: false,
-        }).then(image => {
-            console.log(image, 'rrr');
-            setImg(image);
-            //@ts-ignore
-            ImageCropPicker.openCropper({
-                path: image.path,
-            }).then(croppedImage => {
-                console.log(croppedImage, 'cropped image', image);
+        try {
+            ImagePicker.openPicker({
+                mediaType: 'photo',
+                width: 300,
+                height: 300,
+                cropping: false,
+            }).then(image => {
+                console.log(image, 'rrr');
+                setImg(image);
                 //@ts-ignore
-                dispatch(
-                    updateInitialPhotoDetails({
-                        ...image,
-                        cropRect: croppedImage.cropRect,
-                    })
-                );
-                navigation.navigate('InitialUpload');
+                ImageCropPicker.openCropper({
+                    path: image.path,
+                }).then(croppedImage => {
+                    console.log(croppedImage, 'cropped image', image);
+                    //@ts-ignore
+                    dispatch(
+                        updateInitialPhotoDetails({
+                            ...image,
+                            cropRect: croppedImage.cropRect,
+                        })
+                    );
+                    navigation.navigate('InitialUpload');
+                });
             });
-        });
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const handleCameraImage = async () => {

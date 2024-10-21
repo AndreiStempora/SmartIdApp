@@ -5,7 +5,6 @@ import {
     useCameraPermission,
 } from 'react-native-vision-camera';
 import { useEffect, useRef, useState } from 'react';
-import { Platform } from 'react-native';
 
 type Props = {
     photo: boolean;
@@ -33,6 +32,7 @@ const CustomCamera = ({ photo, cam, wideScreen, ultraWideExists }: Props) => {
             setUltraWideDevice([...wideDev]);
             ultraWideExists && ultraWideExists(true);
         }
+        console.log('dev', device);
     }, []);
 
     useEffect(() => {
@@ -52,6 +52,7 @@ const CustomCamera = ({ photo, cam, wideScreen, ultraWideExists }: Props) => {
         })();
         return () => {
             setIsActive(false);
+            console.log('closing camera!!!!!!!!!');
         };
     }, []);
 
@@ -68,15 +69,17 @@ const CustomCamera = ({ photo, cam, wideScreen, ultraWideExists }: Props) => {
             <Camera
                 enableZoomGesture={true}
                 //@ts-ignore
-                orientation={
-                    Platform.OS === 'android'
-                        ? 'landscape-left'
-                        : 'landscape-right'
-                }
+                // orientation={
+                //     Platform.OS === 'android'
+                //         ? 'landscape-left'
+                //         : 'landscape-right'
+                // }
                 // maxZoom={3}
-                photoQualityBalance={'balanced'}
+                photoQualityBalance={'quality'}
+                // format={device.formats[0]}
                 ref={camera}
                 device={
+                    // device
                     wideScreen && ultraWideDevice.length > 0
                         ? ultraWideDevice[0]
                         : device

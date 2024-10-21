@@ -35,6 +35,7 @@ const CustomTextButton = ({
                 stretch && styles.buttonStretch,
                 background ? { backgroundColor: background } : null,
                 border ? { borderColor: border } : null,
+                disabled ? styles.disabledButton : null,
             ]}>
             {/*<LinearGradient*/}
             {/*    colors={['#017CFF', '#185EA9', '#222527', '#717274']}*/}
@@ -79,6 +80,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    disabledButton: {
+        backgroundColor: 'rgba(226, 64, 107, 0.5)',
     },
     buttonStretch: {
         width: '100%',

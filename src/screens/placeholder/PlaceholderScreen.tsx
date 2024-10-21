@@ -12,10 +12,13 @@ const PlaceholderScreen = ({ navigation }: any) => {
             header={
                 <HeaderComponent
                     title={t('placeholder.title')}
-                    backBtn={true}></HeaderComponent>
+                    backBtn={true}
+                />
             }>
             <View style={styles.container}>
-                <Text style={styles.text}>{t('placeholder.text')}</Text>
+                <Text style={styles.text}>
+                    Content For This Page Comming Soon
+                </Text>
             </View>
         </ScreenContainer>
     );

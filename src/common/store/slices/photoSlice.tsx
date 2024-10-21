@@ -9,6 +9,8 @@ type photo = {
         images: string[];
         code: string;
     };
+    selectedMatch: match;
+    takenPicturesData: {};
 };
 
 export type match = {
@@ -20,7 +22,7 @@ export type match = {
     images: string[];
 };
 type slot = {
-    id: string;
+    slot: string;
     name: string;
     required: boolean;
     editable: boolean;
@@ -36,6 +38,15 @@ const initialState: photo = {
         images: [],
         code: '',
     },
+    selectedMatch: {
+        title: '',
+        subtitle: '',
+        reference: '',
+        id: '',
+        confidence: 0,
+        images: [],
+    },
+    takenPicturesData: {},
 };
 
 export const photoSlice = createSlice({
@@ -46,14 +57,27 @@ export const photoSlice = createSlice({
             state.initialPhotoDetails = action.payload;
         },
         updateSlotsData: (state, action) => {
+            if (state.slotsData.length === 0) {
+                state.slotsData = action.payload;
+                return;
+            }
             state.slotsData = state.slotsData.map((slot: slot) =>
-                slot.id === action.payload.id
+                slot.slot === action.payload.slot
                     ? { ...slot, ...action.payload }
                     : slot
             );
         },
         updateInitialPhotoResponse: (state, action) => {
             state.initialPhotoResponse = action.payload;
+        },
+        updateSelectedMatch: (state, action) => {
+            state.selectedMatch = action.payload;
+        },
+        updateTakenPicturesData: (state, action) => {
+            state.takenPicturesData = {
+                ...state.takenPicturesData,
+                [action.payload.slot]: action.payload.image,
+            };
         },
     },
 });
@@ -62,6 +86,8 @@ export const {
     updateInitialPhotoDetails,
     updateSlotsData,
     updateInitialPhotoResponse,
+    updateSelectedMatch,
+    updateTakenPicturesData,
 } = photoSlice.actions;
 
 export const getPhotoSliceData = (state: RootState) => state.photo;
@@ -72,6 +98,11 @@ export const getInitialPhotoDetails = (state: RootState) =>
 export const getInitialPhotoResponse = (state: RootState) =>
     state.photo.initialPhotoResponse;
 
+export const getSelectedMatch = (state: RootState) => state.photo.selectedMatch;
+
 export const getSlotsData = (state: RootState) => state.photo.slotsData;
+
+export const getTakenPicturesData = (state: RootState) =>
+    state.photo.takenPicturesData;
 
 export default photoSlice.reducer;

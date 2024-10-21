@@ -4,9 +4,15 @@ import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import CustomTextButton from '../../../../common/components/buttons/buttonText/CustomTextButton.tsx';
 import ConfidenceContainer from '../../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
 import CustomImageComponent from '../../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
-import { match } from '../../../../common/store/slices/photoSlice.tsx';
+import {
+    getPhotoSliceData,
+    match,
+    updateSelectedMatch,
+} from '../../../../common/store/slices/photoSlice.tsx';
 import { useState } from 'react';
 import CustomModal from '../../../../common/components/modals/customModal.tsx';
+import { AppDispatch } from '../../../../common/store/store.tsx';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = {
     item: match;
@@ -27,10 +33,15 @@ Props) => {
         setShowModal(true);
     };
 
+    const dispatch = useDispatch<AppDispatch>();
+    // const photoSlice = useSelector(getPhotoSliceData);
+
     const handleModalYes = () => {
-        console.log('yes', item, code);
         setShowModal(false);
+        dispatch(updateSelectedMatch(item));
+        navigation.navigate('FullUpload');
     };
+
     return (
         <View style={styles.itemContainer}>
             <CustomModal

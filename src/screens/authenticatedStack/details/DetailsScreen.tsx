@@ -16,43 +16,48 @@ import CustomModal from '../../../common/components/modals/customModal.tsx';
 import CustomImageComponent from '../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
 // import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
 import HiddenButton from './components/HiddenButton.tsx';
+import { useSelector } from 'react-redux';
+import { getPhotoSliceData } from '../../../common/store/slices/photoSlice.tsx';
 
 const DetailsScreen = ({ navigation }: any) => {
     // useAndroidBackButton();
-    const router = useRoute();
+
     const { postRequest } = useApiHeaders();
     const [isVisible, setIsVisible] = useState(false);
     // const [isVisibleNew, setIsVisibleNew] = useState(false);
     const [error, setError] = useState(false);
-    const [item, setItem] = useState({
-        brand: '',
-        confidence: 0,
-        model: '',
-        details: [],
-        images: [],
-        reference: '',
-        code: '',
-        position: 0,
-        selectedPos: false,
-    });
+    const [images, setImages] = useState([]);
+    const photoSlice = useSelector(getPhotoSliceData);
+    useEffect(() => {
+        console.log(photoSlice, 'photoSlice');
+    }, []);
     const handleRegisterWatch = async () => {
-        console.log('register watch', item);
-        const response = await postRequest('/register', {
-            code: item.code,
-            // reference: item.reference,
-            model: item.reference,
-        });
-        if (response.status === 'ok') {
-            setIsVisible(true);
-        } else {
-            setError(true);
-            setIsVisible(true);
-        }
+        // console.log('register watch', item);
+        // const response = await postRequest('/register', {
+        //     code: item.code,
+        //     // reference: item.reference,
+        //     model: item.reference,
+        // });
+        // if (response.status === 'ok') {
+        //     setIsVisible(true);
+        // } else {
+        //     setError(true);
+        //     setIsVisible(true);
+        // }
     };
-    useEffect(() => {}, []);
+    useEffect(() => {
+        (async () => {
+            // const response = await postRequest('/scans/details', {
+            //     code: photoSlice.initialPhotoResponse.code,
+            // });
+            // setItem(response.scan);
+            // console.log(response, 'response');
+            // setImages(response.scan.images);
+        })();
+    }, []);
 
     const handleAuthenticity = () => {
-        navigation.navigate('Authenticity', { ...item });
+        // navigation.navigate('Authenticity', { ...item });
     };
     return (
         <ScreenContainer nav={navigation} fullScreen={true}>
@@ -79,64 +84,64 @@ const DetailsScreen = ({ navigation }: any) => {
                 <IdHeader navigation={navigation} />
             </View>
             <View style={styles.imageContainer}>
-                {item.images.length !== 1 ? (
-                    <ImageCarousel images={item.images} />
+                {images.length !== 1 ? (
+                    <ImageCarousel images={images} />
                 ) : (
                     <CustomImageComponent
-                        image={item.images[0]}
+                        image={images[0]}
                         resizeMode={'contain'}
                         // btnPosition={{ top: h(20), right: w(16) }}
                     />
                 )}
-                <ConfidenceContainer
-                    confidence={item.confidence}
-                    // selectedPos={item.selectedPos}
-                    cssPosition={{ bottom: h(16), right: w(16) }}
-                />
+                {/*<ConfidenceContainer*/}
+                {/*    confidence={item.confidence}*/}
+                {/*    // selectedPos={item.selectedPos}*/}
+                {/*    cssPosition={{ bottom: h(16), right: w(16) }}*/}
+                {/*/>*/}
             </View>
-            <View style={styles.contentContainer}>
-                <View style={styles.btnContainer}>
-                    <View style={styles.individualBtnContainer}>
-                        <CustomTextButton
-                            onPress={handleRegisterWatch}
-                            text={'register'}
-                            icon={'watch'}
-                            background={Colors.black300}
-                            border={Colors.black400}
-                        />
-                    </View>
-                    <View style={styles.individualBtnContainer}>
-                        <CustomTextButton
-                            onPress={handleAuthenticity}
-                            text={'Authenticity'}
-                            icon={'verified'}
-                            background={Colors.black300}
-                            border={Colors.black400}
-                        />
-                    </View>
-                </View>
-                <HiddenButton
-                    navigation={navigation}
-                    code={item.code}
-                    //@ts-ignore
-                    fakeRegister={router.params.fakeResult}
-                />
-                <View style={styles.listContainer}>
-                    {/*<ImageCarousel images={dummyImages} />*/}
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        style={{ flex: 1 }}
-                        contentContainerStyle={{ paddingBottom: h(16) }}
-                        data={item.details}
-                        keyExtractor={(item, index) => index.toString()}
-                        //@ts-ignore
-                        renderItem={({ item }) => <DetailsList item={item} />}
-                        ItemSeparatorComponent={() => (
-                            <View style={styles.transparentSeparator} />
-                        )}
-                    />
-                </View>
-            </View>
+            {/*<View style={styles.contentContainer}>*/}
+            {/*    <View style={styles.btnContainer}>*/}
+            {/*        <View style={styles.individualBtnContainer}>*/}
+            {/*            <CustomTextButton*/}
+            {/*                onPress={handleRegisterWatch}*/}
+            {/*                text={'register'}*/}
+            {/*                icon={'watch'}*/}
+            {/*                background={Colors.black300}*/}
+            {/*                border={Colors.black400}*/}
+            {/*            />*/}
+            {/*        </View>*/}
+            {/*        <View style={styles.individualBtnContainer}>*/}
+            {/*            <CustomTextButton*/}
+            {/*                onPress={handleAuthenticity}*/}
+            {/*                text={'Authenticity'}*/}
+            {/*                icon={'verified'}*/}
+            {/*                background={Colors.black300}*/}
+            {/*                border={Colors.black400}*/}
+            {/*            />*/}
+            {/*        </View>*/}
+            {/*    </View>*/}
+            {/*    /!*<HiddenButton*!/*/}
+            {/*    /!*    navigation={navigation}*!/*/}
+            {/*    /!*    code={item.code}*!/*/}
+            {/*    /!*    //@ts-ignore*!/*/}
+            {/*    /!*    fakeRegister={router.params.fakeResult}*!/*/}
+
+            {/*    <View style={styles.listContainer}>*/}
+            {/*        /!*<ImageCarousel images={dummyImages} />*!/*/}
+            {/*        <FlatList*/}
+            {/*            showsVerticalScrollIndicator={false}*/}
+            {/*            style={{ flex: 1 }}*/}
+            {/*            contentContainerStyle={{ paddingBottom: h(16) }}*/}
+            {/*            data={item.details}*/}
+            {/*            keyExtractor={(item, index) => index.toString()}*/}
+            {/*            //@ts-ignore*/}
+            {/*            renderItem={({ item }) => <DetailsList item={item} />}*/}
+            {/*            ItemSeparatorComponent={() => (*/}
+            {/*                <View style={styles.transparentSeparator} />*/}
+            {/*            )}*/}
+            {/*        />*/}
+            {/*    </View>*/}
+            {/*</View>*/}
         </ScreenContainer>
     );
 };

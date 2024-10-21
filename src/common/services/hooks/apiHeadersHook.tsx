@@ -165,7 +165,7 @@ const useApiHeaders = () => {
     const setRequestBody = (obj: BodyObject) => {
         const formData = new FormData();
 
-        formData.append('code', language);
+        // formData.append('code', language);
         for (let item in obj) {
             formData.append(item, obj[item]);
         }

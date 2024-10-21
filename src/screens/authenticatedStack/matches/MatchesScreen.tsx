@@ -131,7 +131,9 @@ const MatchesScreen = ({ navigation }: any) => {
     //     setIsVisible(true);
     // };
 
-    const handleBack = () => {};
+    const handleBack = () => {
+        navigation.navigate('Dashboard');
+    };
     useAndroidBackButton(handleBack);
     return (
         <ScreenContainer nav={navigation} fullScreen={true}>

@@ -16,7 +16,7 @@ type ResponseProps = {
     finish?: boolean;
 };
 const AnalyzingScreen = ({ navigation }: any) => {
-    useAndroidBackButton();
+    // useAndroidBackButton();
     const route = useRoute();
     const { upload } = useBlob();
     const { postRequest } = useApiHeaders();

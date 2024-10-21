@@ -7,6 +7,7 @@ import {
     RefreshControl,
     StyleSheet,
     Text,
+    TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -28,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { getApp } from '../../../common/store/slices/appSlice.tsx';
 import { useIsFocused } from '@react-navigation/native';
 import Icon from '../../../common/components/icons/Icon.tsx';
+import useDebounce from '../../../common/services/hooks/debounceHook.tsx';
 
 export type ItemContent = {
     title: string;
@@ -54,7 +56,25 @@ const DashboardScreen = ({ navigation }: any) => {
     const { postRequest } = useApiHeaders();
     const isFocused = useIsFocused();
     const app = useSelector(getApp);
+    const [searchText, setSearchText] = useState('');
     const [grid, setGrid] = useState(false);
+
+    const textSearch = async () => {
+        const response = await postRequest('/scans', {
+            page: pagination.current.page,
+            ipp: pagination.current.ipp,
+            q: searchText,
+        });
+
+        if (response?.status !== 'ok') {
+            return;
+        }
+        setScans(response.results.records);
+        pagination.current.pages = response.results.pages;
+    };
+    //
+    const search = useDebounce(textSearch, 500);
+
     const photoHandler = (res: ImagePickerResponse) => {
         if (res.didCancel) {
             console.log('User cancelled image picker');
@@ -91,24 +111,16 @@ const DashboardScreen = ({ navigation }: any) => {
         }
         (isFocused || refresh) &&
             (async () => {
-                const response = await postRequest('/scans', {
-                    page: pagination.current.page,
-                    ipp: pagination.current.ipp,
-                });
-
-                if (response?.status !== 'ok') {
-                    return;
-                }
-                setScans(response.results.records);
-                pagination.current.pages = response.results.pages;
+                search();
             })();
-        console.log('xx', pagination.current);
+        console.log('xx', pagination.current, searchText);
         setRefresh(false);
+
         return () => {
             pagination.current = { page: 1, ipp: 10, pages: 1 };
             setScans([]);
         };
-    }, [app.domain, isFocused, refresh]);
+    }, [app.domain, isFocused, refresh, searchText]);
 
     const handleReachEnd = async () => {
         if (pagination.current.page < pagination.current.pages) {
@@ -116,6 +128,7 @@ const DashboardScreen = ({ navigation }: any) => {
             const response = await postRequest('/scans', {
                 page: pagination.current.page,
                 ipp: pagination.current.ipp,
+                query: searchText,
             });
             console.log('response end', response);
             setScans(prevScans => [
@@ -163,13 +176,21 @@ const DashboardScreen = ({ navigation }: any) => {
             {/*    </View>*/}
             {/*</CustomModal>*/}
             <View style={styles.controlsContainer}>
-                <TouchableOpacity
-                    style={styles.filtersBtnContainer}
-                    onPress={() => {}}>
-                    <View style={styles.gridBtnContainer}>
-                        <Icon icon={'boldFilters'} />
-                    </View>
-                </TouchableOpacity>
+                {/*<TouchableOpacity*/}
+                {/*    style={styles.filtersBtnContainer}*/}
+                {/*    onPress={() => {}}>*/}
+                {/*    <View style={styles.gridBtnContainer}>*/}
+                {/*        <Icon icon={'boldFilters'} />*/}
+                {/*    </View>*/}
+                {/*</TouchableOpacity>*/}
+                <TextInput
+                    numberOfLines={1}
+                    style={styles.searchInput}
+                    placeholder={'Search'}
+                    onChange={e => {
+                        setSearchText(e.nativeEvent.text);
+                    }}
+                />
                 <TouchableOpacity
                     style={{}}
                     onPress={() => {
@@ -183,11 +204,11 @@ const DashboardScreen = ({ navigation }: any) => {
                         )}
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{}} onPress={() => {}}>
-                    <View style={styles.gridBtnContainer}>
-                        <Icon icon={'boldSort'} />
-                    </View>
-                </TouchableOpacity>
+                {/*<TouchableOpacity style={{}} onPress={() => {}}>*/}
+                {/*    <View style={styles.gridBtnContainer}>*/}
+                {/*        <Icon icon={'boldSort'} />*/}
+                {/*    </View>*/}
+                {/*</TouchableOpacity>*/}
             </View>
             <FlatList
                 key={grid ? 'grid' : 'list'}
@@ -252,6 +273,7 @@ const styles = StyleSheet.create({
     container: {
         gap: h(16),
     },
+
     separator: {
         height: h(8),
     },
@@ -267,6 +289,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
     },
+    searchInput: {
+        height: h(56),
+        flexGrow: 1,
+        backgroundColor: Colors.black300,
+        borderRadius: w(4),
+        borderWidth: 1,
+        borderColor: Colors.black400,
+        paddingHorizontal: w(16),
+    },
     filtersBtnContainer: {
         marginRight: 'auto',
     },
@@ -280,6 +311,7 @@ const styles = StyleSheet.create({
     },
     controlsContainer: {
         flexDirection: 'row',
+        marginBottom: h(8),
     },
     gridBtnContainer: {
         paddingHorizontal: w(15),
