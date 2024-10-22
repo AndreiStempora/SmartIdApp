@@ -11,6 +11,7 @@ type photo = {
     };
     selectedMatch: match;
     takenPicturesData: {};
+    code: string;
 };
 
 export type match = {
@@ -47,6 +48,7 @@ const initialState: photo = {
         images: [],
     },
     takenPicturesData: {},
+    code: '',
 };
 
 export const photoSlice = createSlice({
@@ -79,6 +81,9 @@ export const photoSlice = createSlice({
                 [action.payload.slot]: action.payload.image,
             };
         },
+        updateCode: (state, action) => {
+            state.code = action.payload;
+        },
     },
 });
 
@@ -88,6 +93,7 @@ export const {
     updateInitialPhotoResponse,
     updateSelectedMatch,
     updateTakenPicturesData,
+    updateCode,
 } = photoSlice.actions;
 
 export const getPhotoSliceData = (state: RootState) => state.photo;
@@ -104,5 +110,7 @@ export const getSlotsData = (state: RootState) => state.photo.slotsData;
 
 export const getTakenPicturesData = (state: RootState) =>
     state.photo.takenPicturesData;
+
+export const getCode = (state: RootState) => state.photo.code;
 
 export default photoSlice.reducer;

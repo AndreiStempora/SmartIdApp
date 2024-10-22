@@ -7,6 +7,7 @@ import Icon from '../../../../common/components/icons/Icon.tsx';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../common/store/store.tsx';
 import { updateSelectedItem } from '../../../../common/store/slices/selectedItemSlice.tsx';
+import { updateCode } from '../../../../common/store/slices/photoSlice.tsx';
 
 type Props = {
     item: ItemContent;
@@ -43,10 +44,12 @@ const ScanItem = ({ item, navigation, grid }: Props) => {
 
     const handleSeeDetails = () => {
         dispatch(updateSelectedItem(item));
-        console.log('item', item);
+        console.log('item2', item);
+        dispatch(updateCode(item.code));
         // navigation.navigate('Matches', { ...item });
         // navigation.navigate('Placeholder');
-        // navigation.navigate('Details');
+        navigation.navigate('Details');
+        //item2 {"authenticate": null, "code": "30f377835e4175a3e338962903b13bfc", "date": 1729533339000, "subtitle": null, "title": "#58 - Unknown", "tn": "https://v3.smartid.stempora.me/public/smartid/scans/watchfinder/30f377835e4175a3e338962903b13bfc/85.jpg?1729587363"}
     };
     return (
         <TouchableOpacity
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
     },
     mainContainerGrid: {
         flex: 1,
+        maxWidth: '50%',
         borderWidth: 1,
         borderColor: Colors.black400,
         borderRadius: 4,

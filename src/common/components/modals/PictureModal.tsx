@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 
     btnContainer: {
         position: 'absolute',
-        top: h(19),
+        top: h(16),
         right: w(10),
         padding: w(6),
         // backgroundColor: 'red',

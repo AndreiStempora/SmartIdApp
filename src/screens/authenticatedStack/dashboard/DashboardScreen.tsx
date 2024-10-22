@@ -6,17 +6,14 @@ import {
     FlatList,
     RefreshControl,
     StyleSheet,
-    Text,
     TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
-
 import { h, w } from '../../../common/styles/PixelPerfect.tsx';
 import UserIcon from '../../../common/components/smallComponents/user/UserIcon.tsx';
 import ScanItem from './components/ScanItem.tsx';
 import CustomIconButton from '../../../common/components/buttons/buttonIcon/CustomIconButton.tsx';
-import CustomModal from '../../../common/components/modals/customModal.tsx';
 
 import {
     ImagePickerResponse,
@@ -30,6 +27,8 @@ import { getApp } from '../../../common/store/slices/appSlice.tsx';
 import { useIsFocused } from '@react-navigation/native';
 import Icon from '../../../common/components/icons/Icon.tsx';
 import useDebounce from '../../../common/services/hooks/debounceHook.tsx';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ScreenContainerNoPaddings from '../../../common/components/screenComponents/containers/ScreenContainerNoPaddings.tsx';
 
 export type ItemContent = {
     title: string;
@@ -89,14 +88,14 @@ const DashboardScreen = ({ navigation }: any) => {
         setIsVisible(false);
         navigation.navigate('Analyzing', { file: file });
     };
-    const handleAddPhoto = async () => {
-        const res = await launchImageLibrary({ mediaType: 'photo' });
-        photoHandler(res);
-    };
-    const handleAddPhotoCamera = async () => {
-        const res = await launchCamera({ mediaType: 'photo' });
-        photoHandler(res);
-    };
+    // const handleAddPhoto = async () => {
+    //     const res = await launchImageLibrary({ mediaType: 'photo' });
+    //     photoHandler(res);
+    // };
+    // const handleAddPhotoCamera = async () => {
+    //     const res = await launchCamera({ mediaType: 'photo' });
+    //     photoHandler(res);
+    // };
 
     // useEffect(() => {
     //     return () => {
@@ -143,6 +142,7 @@ const DashboardScreen = ({ navigation }: any) => {
     return (
         <ScreenContainer
             nav={navigation}
+            // removeBg={true}
             header={
                 <HeaderComponent
                     title={'Dashboard'}
@@ -150,39 +150,7 @@ const DashboardScreen = ({ navigation }: any) => {
                     leftSide={<UserIcon nav={navigation} />}
                 />
             }>
-            {/*<CustomModal*/}
-            {/*    isVisible={isVisible}*/}
-            {/*    buttons={[*/}
-            {/*        { title: 'cancel', onPress: () => setIsVisible(false) },*/}
-            {/*    ]}>*/}
-            {/*    <View style={styles.btnContainer}>*/}
-            {/*        <View style={styles.btn}>*/}
-            {/*            <CustomIconButton*/}
-            {/*                onPress={handleAddPhoto}*/}
-            {/*                icon={'gallery'}*/}
-            {/*                background={'transparent'}*/}
-            {/*            />*/}
-            {/*            <Text style={styles.btnText}>Library</Text>*/}
-            {/*        </View>*/}
-
-            {/*        <View style={styles.btn}>*/}
-            {/*            <CustomIconButton*/}
-            {/*                onPress={handleAddPhotoCamera}*/}
-            {/*                icon={'camera'}*/}
-            {/*                background={'transparent'}*/}
-            {/*            />*/}
-            {/*            <Text style={styles.btnText}>Camera</Text>*/}
-            {/*        </View>*/}
-            {/*    </View>*/}
-            {/*</CustomModal>*/}
             <View style={styles.controlsContainer}>
-                {/*<TouchableOpacity*/}
-                {/*    style={styles.filtersBtnContainer}*/}
-                {/*    onPress={() => {}}>*/}
-                {/*    <View style={styles.gridBtnContainer}>*/}
-                {/*        <Icon icon={'boldFilters'} />*/}
-                {/*    </View>*/}
-                {/*</TouchableOpacity>*/}
                 <TextInput
                     numberOfLines={1}
                     style={styles.searchInput}
@@ -253,7 +221,6 @@ const DashboardScreen = ({ navigation }: any) => {
                 onEndReached={handleReachEnd}
                 onEndReachedThreshold={0.5}
             />
-
             <View
                 style={{
                     position: 'absolute',
@@ -277,13 +244,13 @@ const styles = StyleSheet.create({
     separator: {
         height: h(8),
     },
-    logoContainer: {
-        position: 'absolute',
-        top: h(48),
-        width: '100%',
-        alignItems: 'center',
-        marginBottom: h(96),
-    },
+    // logoContainer: {
+    //     position: 'absolute',
+    //     top: h(48),
+    //     width: '100%',
+    //     alignItems: 'center',
+    //     marginBottom: h(96),
+    // },
     btnContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',

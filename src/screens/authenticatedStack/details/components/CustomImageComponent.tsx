@@ -1,5 +1,5 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 import Icon from '../../../../common/components/icons/Icon.tsx';
 import PictureModal from '../../../../common/components/modals/PictureModal.tsx';
@@ -7,12 +7,15 @@ import { h, w } from '../../../../common/styles/PixelPerfect.tsx';
 import { Colors } from '../../../../common/styles/constants.tsx';
 
 type Props = {
-    image: string;
+    image: { url: string; slot: string };
     btnPosition?: { top: number; right: number };
     resizeMode?: 'cover' | 'contain';
 };
 const CustomImageComponent = ({ image, btnPosition, resizeMode }: Props) => {
     const [isVisible, setIsVisible] = useState(false);
+    useEffect(() => {
+        console.log('imagerrrr', image);
+    }, []);
     return (
         <View style={[styles.mainContainer]}>
             <View style={[styles.imgContainer]}>
@@ -21,7 +24,7 @@ const CustomImageComponent = ({ image, btnPosition, resizeMode }: Props) => {
                         styles.img,
                         resizeMode && { resizeMode: resizeMode },
                     ]}
-                    source={{ uri: image }}
+                    source={{ uri: image.url }}
                 />
             </View>
             <TouchableOpacity
@@ -46,7 +49,7 @@ const CustomImageComponent = ({ image, btnPosition, resizeMode }: Props) => {
                         bindToBorders={true}>
                         <Image
                             style={[styles.innerImage]}
-                            source={{ uri: image }}
+                            source={{ uri: image.url }}
                         />
                     </ReactNativeZoomableView>
                 </View>
@@ -68,8 +71,8 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         position: 'absolute',
-        top: h(19),
-        right: w(16),
+        top: h(16),
+        right: w(10),
         padding: w(6),
     },
     btn: {

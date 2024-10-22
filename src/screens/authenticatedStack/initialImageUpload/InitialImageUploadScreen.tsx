@@ -7,6 +7,7 @@ import ScreenContainer from '../../../common/components/screenComponents/contain
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getInitialPhotoDetails,
+    updateCode,
     updateInitialPhotoResponse,
 } from '../../../common/store/slices/photoSlice.tsx';
 import useBlob from '../../../common/services/hooks/blobHook.tsx';
@@ -44,6 +45,7 @@ const InitialImageUploadScreen = ({ navigation }: any) => {
                 );
                 if (res.status === 'ok') {
                     dispatch(updateInitialPhotoResponse(res));
+                    dispatch(updateCode(res.code));
                     setOutcome('success');
                 } else {
                     setOutcome('error');

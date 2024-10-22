@@ -4,6 +4,7 @@ import {
     StyleSheet,
     ImageBackground,
     StatusBar,
+    ScrollView,
 } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -72,85 +73,91 @@ const ScreenContainer = ({
 
     return (
         <View style={styles.mainPageView}>
-            <StatusBar
-                backgroundColor="#454545"
-                animated={true}
-                barStyle={'light-content'}
-            />
-            <OrientationLocker
-                orientation={PORTRAIT}
-                // onChange={orientation => console.log('onChange', orientation)}
-                // onDeviceChange={orientation => console.log('onDeviceChange', orientation)}
-            />
-            {removeBg ? (
-                <View style={styles.imgBg}>
-                    {header && header}
-                    <SafeAreaView
-                        style={[
-                            styles.safeArea,
-                            !header && { paddingTop: insets.top },
-                            !footer && { marginBottom: insets.bottom },
-                        ]}>
-                        <View
+            <ScrollView
+                scrollEnabled={false}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flex: 1 }}
+                keyboardShouldPersistTaps="handled">
+                <StatusBar
+                    backgroundColor="#454545"
+                    animated={true}
+                    barStyle={'light-content'}
+                />
+                <OrientationLocker
+                    orientation={PORTRAIT}
+                    // onChange={orientation => console.log('onChange', orientation)}
+                    // onDeviceChange={orientation => console.log('onDeviceChange', orientation)}
+                />
+                {removeBg ? (
+                    <View style={styles.imgBg}>
+                        {header && header}
+                        <SafeAreaView
                             style={[
                                 styles.safeArea,
-                                styles.safeAreaInner,
-                                fullScreen && styles.safeAreaInnerFull,
+                                !header && { paddingTop: insets.top },
+                                !footer && { marginBottom: insets.bottom },
                             ]}>
                             <View
                                 style={[
-                                    styles.fullContentContainer,
-                                    contentStyle,
-                                    fullScreen &&
-                                        styles.fullContentContainerFull,
+                                    styles.safeArea,
+                                    styles.safeAreaInner,
+                                    fullScreen && styles.safeAreaInnerFull,
                                 ]}>
-                                {error ? (
-                                    <ErrorScreen nav={nav} />
-                                ) : (
-                                    <>{children}</>
-                                )}
+                                <View
+                                    style={[
+                                        styles.fullContentContainer,
+                                        contentStyle,
+                                        fullScreen &&
+                                            styles.fullContentContainerFull,
+                                    ]}>
+                                    {error ? (
+                                        <ErrorScreen nav={nav} />
+                                    ) : (
+                                        <>{children}</>
+                                    )}
+                                </View>
                             </View>
-                        </View>
-                    </SafeAreaView>
-                    {footer && footer}
-                </View>
-            ) : (
-                <ImageBackground
-                    source={require('../../../../../assets/images/AppBackground.png')}
-                    style={styles.imgBg}>
-                    {header && header}
-                    <SafeAreaView
-                        style={[
-                            styles.safeArea,
-                            !header && { paddingTop: insets.top },
-                            !footer && { marginBottom: insets.bottom },
-                        ]}>
-                        <View
+                        </SafeAreaView>
+                        {footer && footer}
+                    </View>
+                ) : (
+                    <ImageBackground
+                        source={require('../../../../../assets/images/AppBackground.png')}
+                        style={styles.imgBg}>
+                        {header && header}
+                        <SafeAreaView
                             style={[
                                 styles.safeArea,
-                                styles.safeAreaInner,
-                                fullScreen && styles.safeAreaInnerFull,
+                                !header && { paddingTop: insets.top },
+                                !footer && { marginBottom: insets.bottom },
                             ]}>
                             <View
                                 style={[
-                                    styles.fullContentContainer,
-                                    contentStyle,
-                                    fullScreen &&
-                                        styles.fullContentContainerFull,
+                                    styles.safeArea,
+                                    styles.safeAreaInner,
+                                    fullScreen && styles.safeAreaInnerFull,
                                 ]}>
-                                {/*<Toast config={toastConfig} />*/}
-                                {error ? (
-                                    <ErrorScreen nav={nav} />
-                                ) : (
-                                    <>{children}</>
-                                )}
+                                <View
+                                    style={[
+                                        styles.fullContentContainer,
+                                        contentStyle,
+                                        fullScreen &&
+                                            styles.fullContentContainerFull,
+                                    ]}>
+                                    {/*<Toast config={toastConfig} />*/}
+                                    {error ? (
+                                        <ErrorScreen nav={nav} />
+                                    ) : (
+                                        <>{children}</>
+                                    )}
+                                </View>
                             </View>
-                        </View>
-                    </SafeAreaView>
-                    {footer && footer}
-                </ImageBackground>
-            )}
-            {/*<View style={styles.bottom}></View>*/}
+                        </SafeAreaView>
+                        {footer && footer}
+                    </ImageBackground>
+                )}
+                {/*<View style={styles.bottom}></View>*/}
+            </ScrollView>
         </View>
     );
 };
@@ -162,11 +169,14 @@ const styles = StyleSheet.create({
     dismissKeyboard: {
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        // backgroundColor:'yellow'
+
+        // backgroundColor: 'yellow',
     },
-    imgBg: { flex: 1, backgroundColor: '#161616' },
+    imgBg: {
+        flex: 1,
+        backgroundColor: '#161616',
+    },
     safeArea: {
-        // backgroundColor:'red',
         flex: 1,
         marginTop: 0,
         marginBottom: 0,
@@ -181,6 +191,7 @@ const styles = StyleSheet.create({
 
     fullContentContainer: {
         // marginVertical: h(16),
+
         flex: 1,
     },
     fullContentContainerFull: {

@@ -9,8 +9,8 @@ import {
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ErrorScreen from '../errors/ErrorScreen';
-import {h, w} from "../../../styles/PixelPerfect.tsx";
-import {ALL_ORIENTATIONS_BUT_UPSIDE_DOWN, OrientationLocker, PORTRAIT, UNLOCK} from "react-native-orientation-locker";
+import { h, w } from '../../../styles/PixelPerfect.tsx';
+import { OrientationLocker, PORTRAIT } from 'react-native-orientation-locker';
 
 type Props = {
     children: React.ReactNode;
@@ -30,13 +30,19 @@ const paddingBotForAndroid = () => {
     return 0;
 };
 
-const ScreenContainerNoPaddings = ({ children, contentStyle, nav, header, footer }: Props) => {
+const ScreenContainerNoPaddings = ({
+    children,
+    contentStyle,
+    nav,
+    header,
+    footer,
+}: Props) => {
     const insets = useSafeAreaInsets();
     // const error = useSelector(getPageError);
     const error = false;
     return (
         <View style={styles.mainPageView}>
-            <StatusBar translucent backgroundColor="transparent"  />
+            <StatusBar translucent backgroundColor="transparent" />
             <OrientationLocker
                 orientation={PORTRAIT}
                 // onChange={orientation => console.log('onChange', orientation)}
@@ -46,12 +52,20 @@ const ScreenContainerNoPaddings = ({ children, contentStyle, nav, header, footer
                 source={require('../../../../../assets/images/AppBackground.jpg')}
                 style={styles.imgBg}>
                 {header && header}
-                <SafeAreaView style={[styles.safeArea,!header && {paddingTop:insets.top},
-                    !footer && {marginBottom:insets.bottom}
-                ]}>
-                    <View style={[styles.safeArea,styles.safeAreaInner]}>
-                        <View style={[styles.fullContentContainer, contentStyle]}>
-                            {error ? <ErrorScreen nav={nav} /> : <>{children}</>}
+                <SafeAreaView
+                    style={[
+                        styles.safeArea,
+                        !header && { paddingTop: insets.top },
+                        !footer && { marginBottom: insets.bottom },
+                    ]}>
+                    <View style={[styles.safeArea, styles.safeAreaInner]}>
+                        <View
+                            style={[styles.fullContentContainer, contentStyle]}>
+                            {error ? (
+                                <ErrorScreen nav={nav} />
+                            ) : (
+                                <>{children}</>
+                            )}
                         </View>
                     </View>
                 </SafeAreaView>
@@ -71,22 +85,20 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor:'yellow'
     },
-    imgBg:{flex: 1},
+    imgBg: { flex: 1 },
     safeArea: {
         // backgroundColor:'red',
         flex: 1,
         marginTop: 0,
-        marginBottom:0,
+        marginBottom: 0,
     },
-    safeAreaInner:{
+    safeAreaInner: {
         paddingHorizontal: w(0),
     },
-    safeAreaNoHeader: {
-
-    },
+    safeAreaNoHeader: {},
 
     fullContentContainer: {
-        marginVertical:h(0),
+        marginVertical: h(0),
         flex: 1,
     },
     background: {

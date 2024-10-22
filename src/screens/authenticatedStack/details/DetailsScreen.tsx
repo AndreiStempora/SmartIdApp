@@ -3,34 +3,32 @@ import ScreenContainer from '../../../common/components/screenComponents/contain
 import React, { useEffect, useState } from 'react';
 import { h, w } from '../../../common/styles/PixelPerfect.tsx';
 import { Colors, commonFonts } from '../../../common/styles/constants.tsx';
-import { useRoute } from '@react-navigation/native';
 import IdHeader from '../../../common/components/screenComponents/bars/headers/IdHeader.tsx';
-
-// import { MatchItem } from '../matches/components/MatchesItem.tsx';
-import ConfidenceContainer from '../../../common/components/smallComponents/confidenceContainer/ConfidenceContainer.tsx';
-import CustomTextButton from '../../../common/components/buttons/buttonText/CustomTextButton.tsx';
-import DetailsList from './components/DetailsList.tsx';
 import ImageCarousel from './components/ImageCarousel.tsx';
 import useApiHeaders from '../../../common/services/hooks/apiHeadersHook.tsx';
 import CustomModal from '../../../common/components/modals/customModal.tsx';
-import CustomImageComponent from '../../../common/components/smallComponents/imageCompoent/CustomImageComponent.tsx';
-// import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
-import HiddenButton from './components/HiddenButton.tsx';
+import CustomImageComponent from './components/CustomImageComponent.tsx';
 import { useSelector } from 'react-redux';
-import { getPhotoSliceData } from '../../../common/store/slices/photoSlice.tsx';
+import { getCode } from '../../../common/store/slices/photoSlice.tsx';
+import DetailsList from './components/DetailsList.tsx';
+import useAndroidBackButton from '../../../common/services/hooks/androidBackButtonHook.tsx';
 
 const DetailsScreen = ({ navigation }: any) => {
-    // useAndroidBackButton();
-
     const { postRequest } = useApiHeaders();
     const [isVisible, setIsVisible] = useState(false);
     // const [isVisibleNew, setIsVisibleNew] = useState(false);
     const [error, setError] = useState(false);
     const [images, setImages] = useState([]);
-    const photoSlice = useSelector(getPhotoSliceData);
+    const code = useSelector(getCode);
     useEffect(() => {
-        console.log(photoSlice, 'photoSlice');
+        console.log(code, 'photoSlice');
     }, []);
+
+    const nav = () => {
+        navigation.navigate('Dashboard');
+    };
+
+    const [details, setDetails] = useState([]);
     const handleRegisterWatch = async () => {
         // console.log('register watch', item);
         // const response = await postRequest('/register', {
@@ -47,18 +45,20 @@ const DetailsScreen = ({ navigation }: any) => {
     };
     useEffect(() => {
         (async () => {
-            // const response = await postRequest('/scans/details', {
-            //     code: photoSlice.initialPhotoResponse.code,
-            // });
-            // setItem(response.scan);
-            // console.log(response, 'response');
-            // setImages(response.scan.images);
+            const response = await postRequest('/scans/details', {
+                code: code,
+            });
+
+            console.log(response, 'response details');
+            setImages(response.scan.images);
+            setDetails(response.scan.details);
         })();
     }, []);
 
     const handleAuthenticity = () => {
         // navigation.navigate('Authenticity', { ...item });
     };
+    useAndroidBackButton(nav);
     return (
         <ScreenContainer nav={navigation} fullScreen={true}>
             <CustomModal
@@ -81,10 +81,11 @@ const DetailsScreen = ({ navigation }: any) => {
                 )}
             </CustomModal>
             <View style={styles.buttonFloater}>
-                <IdHeader navigation={navigation} />
+                <IdHeader navigation={navigation} navigate={nav} />
             </View>
             <View style={styles.imageContainer}>
                 {images.length !== 1 ? (
+                    //@ts-ignore
                     <ImageCarousel images={images} />
                 ) : (
                     <CustomImageComponent
@@ -99,49 +100,50 @@ const DetailsScreen = ({ navigation }: any) => {
                 {/*    cssPosition={{ bottom: h(16), right: w(16) }}*/}
                 {/*/>*/}
             </View>
-            {/*<View style={styles.contentContainer}>*/}
-            {/*    <View style={styles.btnContainer}>*/}
-            {/*        <View style={styles.individualBtnContainer}>*/}
-            {/*            <CustomTextButton*/}
-            {/*                onPress={handleRegisterWatch}*/}
-            {/*                text={'register'}*/}
-            {/*                icon={'watch'}*/}
-            {/*                background={Colors.black300}*/}
-            {/*                border={Colors.black400}*/}
-            {/*            />*/}
-            {/*        </View>*/}
-            {/*        <View style={styles.individualBtnContainer}>*/}
-            {/*            <CustomTextButton*/}
-            {/*                onPress={handleAuthenticity}*/}
-            {/*                text={'Authenticity'}*/}
-            {/*                icon={'verified'}*/}
-            {/*                background={Colors.black300}*/}
-            {/*                border={Colors.black400}*/}
-            {/*            />*/}
-            {/*        </View>*/}
-            {/*    </View>*/}
-            {/*    /!*<HiddenButton*!/*/}
-            {/*    /!*    navigation={navigation}*!/*/}
-            {/*    /!*    code={item.code}*!/*/}
-            {/*    /!*    //@ts-ignore*!/*/}
-            {/*    /!*    fakeRegister={router.params.fakeResult}*!/*/}
+            <View style={styles.contentContainer}>
+                {/*<View style={styles.btnContainer}>*/}
+                {/*    <View style={styles.individualBtnContainer}>*/}
+                {/*        <CustomTextButton*/}
+                {/*            onPress={handleRegisterWatch}*/}
+                {/*            text={'register'}*/}
+                {/*            icon={'watch'}*/}
+                {/*            background={Colors.black300}*/}
+                {/*            border={Colors.black400}*/}
+                {/*        />*/}
+                {/*    </View>*/}
+                {/*    <View style={styles.individualBtnContainer}>*/}
+                {/*        <CustomTextButton*/}
+                {/*            onPress={handleAuthenticity}*/}
+                {/*            text={'Authenticity'}*/}
+                {/*            icon={'verified'}*/}
+                {/*            background={Colors.black300}*/}
+                {/*            border={Colors.black400}*/}
+                {/*        />*/}
+                {/*    </View>*/}
+                {/*</View>*/}
+                {/*<HiddenButton*/}
+                {/*    navigation={navigation}*/}
+                {/*    code={item.code}*/}
+                {/*    //@ts-ignore*/}
+                {/*    fakeRegister={router.params.fakeResult}*/}
 
-            {/*    <View style={styles.listContainer}>*/}
-            {/*        /!*<ImageCarousel images={dummyImages} />*!/*/}
-            {/*        <FlatList*/}
-            {/*            showsVerticalScrollIndicator={false}*/}
-            {/*            style={{ flex: 1 }}*/}
-            {/*            contentContainerStyle={{ paddingBottom: h(16) }}*/}
-            {/*            data={item.details}*/}
-            {/*            keyExtractor={(item, index) => index.toString()}*/}
-            {/*            //@ts-ignore*/}
-            {/*            renderItem={({ item }) => <DetailsList item={item} />}*/}
-            {/*            ItemSeparatorComponent={() => (*/}
-            {/*                <View style={styles.transparentSeparator} />*/}
-            {/*            )}*/}
-            {/*        />*/}
-            {/*    </View>*/}
-            {/*</View>*/}
+                <View style={styles.listContainer}>
+                    {/*<ImageCarousel images={dummyImages} />*/}
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        style={{ flex: 1 }}
+                        contentContainerStyle={{ paddingBottom: h(16) }}
+                        //@ts-ignore
+                        data={details.details}
+                        keyExtractor={(item, index) => index.toString()}
+                        //@ts-ignore
+                        renderItem={({ item }) => <DetailsList item={item} />}
+                        ItemSeparatorComponent={() => (
+                            <View style={styles.transparentSeparator} />
+                        )}
+                    />
+                </View>
+            </View>
         </ScreenContainer>
     );
 };

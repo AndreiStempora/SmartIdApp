@@ -1,17 +1,19 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { h, w } from '../../../../common/styles/PixelPerfect';
 import { Colors, commonFonts } from '../../../../common/styles/constants.tsx';
 import CustomImageComponent from './CustomImageComponent.tsx';
 
 type Props = {
-    images: string[];
+    images: [{ url: string; slot: string }];
 };
 const ImageCarousel = ({ images }: Props) => {
     const ref1 = useRef(null);
     const [screenWidth, setScreenWidth] = React.useState(0);
     const [currentIndex, setCurrentIndex] = React.useState(0);
-
+    useEffect(() => {
+        console.log('images', images);
+    }, []);
     return (
         <View
             style={styles.mainContainer}
@@ -27,15 +29,20 @@ const ImageCarousel = ({ images }: Props) => {
                 // scrollEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View
-                        style={[styles.imageContainer, { width: screenWidth }]}>
-                        {/*<Image style={styles.img} source={{ uri: item }} />*/}
-                        <CustomImageComponent image={item} />
-                    </View>
-                )}
+                renderItem={({ item }) => {
+                    return (
+                        <View
+                            style={[
+                                styles.imageContainer,
+                                { width: screenWidth },
+                            ]}>
+                            {/*<Image style={styles.img} source={{ uri: item }} />*/}
+                            <CustomImageComponent image={item} />
+                        </View>
+                    );
+                }}
                 onTouchMove={e => {
-                    console.log('move', e.nativeEvent);
+                    // console.log('move', e.nativeEvent);
                 }}
                 onScroll={e => {
                     const scrollOffset = e.nativeEvent.contentOffset.x;
@@ -43,9 +50,11 @@ const ImageCarousel = ({ images }: Props) => {
                 }}
             />
             <View style={styles.imageCounterContainer}>
-                <Text style={styles.counter}>{currentIndex + 1}</Text>
-                <Text style={styles.counter}>/</Text>
-                <Text style={styles.counter}>{images.length}</Text>
+                <View style={styles.smallCounterContainer}>
+                    <Text style={styles.counter}>{currentIndex + 1}</Text>
+                    <Text style={styles.counter}>/</Text>
+                    <Text style={styles.counter}>{images.length}</Text>
+                </View>
             </View>
         </View>
     );
@@ -73,8 +82,9 @@ const styles = StyleSheet.create({
         width: '100%',
         zIndex: 30,
         // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
         padding: 10,
-        height: h(43),
+        height: h(65),
         pointerEvents: 'none',
         justifyContent: 'center',
         alignItems: 'center',
@@ -84,6 +94,18 @@ const styles = StyleSheet.create({
     counter: {
         ...commonFonts.regularText,
         color: Colors.primary,
+    },
+    smallCounterContainer: {
+        flexDirection: 'row',
+        gap: w(4),
+        // paddingVertical: h(12),
+        // paddingHorizontal: w(16),
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: w(65),
+        height: h(43),
+        backgroundColor: Colors.black300,
+        borderRadius: w(50),
     },
 });
 
